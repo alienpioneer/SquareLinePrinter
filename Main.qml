@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Effects
+import QtQuick.Shapes
 
 Window {
     id: mainWindow
@@ -76,10 +77,43 @@ Window {
 
     component SpecialButton: Item {
 
-        height: width
+        property int size
+        property color colorTint
+
+        property color contourColor
+        property color contourColorPressed
+
         property alias shadowVisible: buttonDropShadow.visible
         property alias embossVisible: buttonEmboss.visible
+        property alias shadowColor: buttonDropShadow.shadowColor
+        property alias shadowOffset: buttonDropShadow.shadowVerticalOffset
+
         property bool showBorders: checker.visible = false
+
+        // TODO add signals
+
+        width: size
+        height: size
+
+        MultiEffect {
+            id: buttonEmboss
+            source:  buttonOuter
+            anchors.fill: parent
+            brightness: 0.5
+            blurEnabled: true
+            blurMax: 36
+            blur: 1
+            blurMultiplier: 2
+        }
+
+        MultiEffect {
+            id: buttonDropShadow
+            source: buttonOuter
+            anchors.fill: parent
+            shadowEnabled: true
+            blurMultiplier: 1.2
+            shadowVerticalOffset: 12
+        }
 
         Rectangle{
             id: checker
@@ -88,22 +122,27 @@ Window {
             anchors.fill: parent
             border.color: "red"
             border.width: 1
-            z: 1
-            color: "transparent"
+            //color: "transparent"
+            color: Qt.rgba(0,0,0,0)
         }
 
         Rectangle {
             id: buttonOuter
-            z: 4
             width: parent.width
             height: width
             radius: 30
-            color: "#586E95"
+            color: colorTint
+            gradient: Gradient {
+                // GradientStop { position: 0.1; color: Qt.rgba(97/255,119/255,157/255,1) }
+                // GradientStop { position: 1.0; color: Qt.rgba(69/255,85/255,114/255,1) }
+                GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(0,0,1,0.1)) }
+                GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.2)) }
+            }
             anchors.centerIn: parent
+            visible: true
 
             RoundButton {
                 id: buttonContour
-                z: 5
                 width: buttonOuter.width*0.91
                 height: buttonOuter.height*0.91
                 radius: buttonOuter.radius-buttonOuter.radius*0.1
@@ -114,77 +153,64 @@ Window {
                     id: buttonContourBkg
                     radius: parent.radius
                     anchors.fill: parent
-                    color: buttonContour.down ? "#7AEFFF" : "#161A23"
+                    color: buttonContour.down ? contourColorPressed : contourColor
                 }
             }
 
             Rectangle {
                 id: buttonBevel
-                z: 6
                 width: buttonContour.width*0.92
                 height: buttonContour.height*0.92
                 anchors.centerIn: buttonContour
                 radius: buttonContour.radius - buttonContour.radius*0.1
                 gradient: Gradient {
-                    GradientStop { position: 0.1; color: "#8CA1C6" }
-                    GradientStop { position: 1.0; color: "#354158" }
+                    // GradientStop { position: 0.1; color: Qt.rgba(140/255,161/255,198/255,1) }
+                    // GradientStop { position: 1.0; color: Qt.rgba(53/255,65/255,88/255,1) }
+                    GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(0,0,1,0.25)) }
+                    GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.4)) }
                 }
                 visible: true
             }
 
             Rectangle {
                 id: buttonInner
-                z: 7
                 width: buttonBevel.width*0.92
                 height: buttonBevel.height*0.92
                 anchors.centerIn: buttonBevel
                 radius: buttonBevel.radius - buttonBevel.radius*0.1
                 gradient: Gradient {
-                    GradientStop { position: 0.1; color: "#61779D" }
-                    GradientStop { position: 1.0; color: "#455572" }
+                    // GradientStop { position: 0.1; color: Qt.rgba(97/255,119/255,157/255,1) }
+                    // GradientStop { position: 1.0; color: Qt.rgba(69/255,85/255,114/255,1) }
+                    GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(0,0,1,0.1)) }
+                    GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.2)) }
                 }
             }
-        }
-
-        MultiEffect {
-            id: buttonDropShadow
-            z: 3
-            source: buttonOuter
-            anchors.fill: buttonOuter
-            shadowEnabled: true
-            shadowColor: "#10131A"
-            blurMultiplier: 1.2
-            shadowVerticalOffset: 14
-            visible: true
-        }
-
-        MultiEffect {
-            id: buttonEmboss
-            z: 2
-            source:  buttonOuter
-            anchors.fill: buttonOuter
-            brightness: 0.5
-            blurEnabled: true
-            blurMax: 36
-            blur: 1
-            blurMultiplier: 2
-            visible: true
         }
     }
 
     SpecialButton{
         id: stopButton
-        width:110
+        size: 110
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.rightMargin: 160
-        anchors.bottomMargin: 160
+        anchors.rightMargin: 60
+        anchors.bottomMargin: 60
+
+        colorTint: "#586E95"
+
+        contourColorPressed: "#7AEFFF"
+        contourColor: "#161A23"
+
+        // shadowVisible: false
+        // embossVisible: false
+        shadowColor: "#10131A"
+        shadowOffset: 8
+
         // showBorders: true
 
         Rectangle {
             id: stopButtonIcon
-            z:11
-            width: stopButton.width*0.38
+            width: stopButton.width*0.3
             height: width
             anchors.centerIn: parent
             radius: 6
@@ -194,105 +220,46 @@ Window {
         }
     }
 
-    // Item {
-    //     id: stopButton
-    //     anchors.right: parent.right
-    //     anchors.bottom: parent.bottom
-    //     anchors.rightMargin: 160
-    //     anchors.bottomMargin: 160
+    SpecialButton{
+        id: startButton
+        size: 110
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.rightMargin: 220
+        anchors.bottomMargin: 60
 
-    //     Rectangle {
-    //         id: stopButtonOuter
-    //         width: 110
-    //         height: 110
-    //         z:7
-    //         radius: 30
-    //         color: "#586E95"
+        colorTint: "#586E95"
 
-    //         RoundButton {
-    //             id: stopButtonContour
-    //             width: stopButtonOuter.width*0.91
-    //             height: stopButtonOuter.height*0.91
-    //             z:8
-    //             radius: stopButtonOuter.radius-stopButtonOuter.radius*0.1
-    //             anchors.centerIn: stopButtonOuter
-    //             onPressed : {console.log("Button Pressed")}
-    //             onReleased : {console.log("Button Released")}
-    //             background: Rectangle {
-    //                 id: stopButtonContourBkg
-    //                 radius: parent.radius
-    //                 anchors.fill: parent
-    //                 color: stopButtonContour.down ? "#7AEFFF" : "#161A23"
-    //             }
-    //         }
+        contourColorPressed: "#7AEFFF"
+        contourColor: "#161A23"
 
-    //         Rectangle {
-    //             id: stopButtonBevel
-    //             width: stopButtonContour.width*0.92
-    //             height: stopButtonContour.height*0.92
-    //             z:9
-    //             anchors.centerIn: stopButtonContour
-    //             radius: stopButtonContour.radius-stopButtonContour.radius*0.1
-    //             gradient: Gradient {
-    //                 GradientStop { position: 0.1; color: "#8CA1C6" }
-    //                 GradientStop { position: 1.0; color: "#354158" }
-    //             }
-    //             visible: true
-    //         }
+        // shadowVisible: false
+        // embossVisible: false
+        shadowColor: "#10131A"
 
-    //         Rectangle {
-    //             id: stopButtonInner
-    //             width: stopButtonBevel.width*0.92
-    //             height: stopButtonBevel.height*0.92
-    //             z:10
-    //             anchors.centerIn: stopButtonBevel
-    //             radius: stopButtonBevel.radius - stopButtonBevel.radius*0.1
-    //             gradient: Gradient {
-    //                 GradientStop { position: 0.1; color: "#61779D" }
-    //                 GradientStop { position: 1.0; color: "#455572" }
-    //             }
-    //         }
+        // showBorders: true
 
-    //         Rectangle {
-    //             id: stopButtonIcon
-    //             width: stopButtonInner.width*0.38
-    //             height: stopButtonInner.height*0.38
-    //             z:11
-    //             anchors.centerIn: stopButtonInner
-    //             radius: 6
-    //             border.color: "#B4CBF5"
-    //             border.width: 5
-    //             gradient: Gradient {
-    //                 GradientStop { position: 0.1; color: "#61779D" }
-    //                 GradientStop { position: 1.0; color: "#455572" }
-    //             }
-    //         }
-    //     }
+        Shape {
 
-    //     MultiEffect {
-    //         id: stopButtonDropShadow
-    //         z: 6
-    //         source: buttonOuter
-    //         anchors.fill: buttonOuter
-    //         shadowEnabled: true
-    //         shadowColor: "#10131A"
-    //         blurMultiplier: 1.2
-    //         shadowVerticalOffset: 14
-    //         visible: true
-    //     }
+            antialiasing: true
 
-    //     MultiEffect {
-    //         id: stopButtonEmboss
-    //         z: 5
-    //         source:  buttonOuter
-    //         anchors.fill: buttonOuter
-    //         brightness: 0.5
-    //         blurEnabled: true
-    //         blurMax: 36
-    //         blur: 1
-    //         blurMultiplier: 2
-    //         visible: true
-    //     }
-    // }
+            ShapePath {
+                id: startButtonPath
+                strokeColor: "#B4CBF5"
+                strokeWidth: 5
+                fillColor: "transparent"
 
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: startButton.width/2-10
+                startY: startButton.width/2+16
+
+                PathLine { x: startButtonPath.startX+26; y: startButtonPath.startY-16 }
+                PathLine { x: startButtonPath.startX; y: startButtonPath.startY-32 }
+                PathLine { x: startButtonPath.startX; y: startButtonPath.startY }
+            }
+        }
+    }
 }

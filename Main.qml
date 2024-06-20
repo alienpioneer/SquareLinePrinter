@@ -77,20 +77,24 @@ Window {
 
     component SpecialButton: Item {
 
+        id: root
         property int size
-        property color colorTint
 
+        property color colorTint
         property color contourColor
-        property color contourColorPressed
 
         property alias shadowVisible: buttonDropShadow.visible
         property alias embossVisible: buttonEmboss.visible
         property alias shadowColor: buttonDropShadow.shadowColor
         property alias shadowOffset: buttonDropShadow.shadowVerticalOffset
 
-        property bool showBorders: checker.visible = false
+        property bool showBorders: false
 
-        // TODO add signals
+        signal switchPressed()
+        signal switchReleased()
+
+        // onSwitchPressed: {console.log("Button Pressed")}
+        // onSwitchReleased: {console.log("Button Released")}
 
         width: size
         height: size
@@ -124,22 +128,21 @@ Window {
             border.width: 1
             //color: "transparent"
             color: Qt.rgba(0,0,0,0)
+            visible: root.showBorders
         }
 
         Rectangle {
             id: buttonOuter
             width: parent.width
             height: width
+            anchors.centerIn: parent
+            visible: true
             radius: 30
             color: colorTint
             gradient: Gradient {
-                // GradientStop { position: 0.1; color: Qt.rgba(97/255,119/255,157/255,1) }
-                // GradientStop { position: 1.0; color: Qt.rgba(69/255,85/255,114/255,1) }
                 GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(0,0,1,0.1)) }
                 GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.2)) }
             }
-            anchors.centerIn: parent
-            visible: true
 
             RoundButton {
                 id: buttonContour
@@ -147,13 +150,14 @@ Window {
                 height: buttonOuter.height*0.91
                 radius: buttonOuter.radius-buttonOuter.radius*0.1
                 anchors.centerIn: buttonOuter
-                onPressed : {console.log("Button Pressed")}
-                onReleased : {console.log("Button Released")}
+                onPressed : root.switchPressed()
+                onReleased : root.switchReleased()
                 background: Rectangle {
                     id: buttonContourBkg
                     radius: parent.radius
                     anchors.fill: parent
-                    color: buttonContour.down ? contourColorPressed : contourColor
+                    // color: buttonContour.down ? contourColorPressed : contourColor
+                    color: contourColor
                 }
             }
 
@@ -164,8 +168,6 @@ Window {
                 anchors.centerIn: buttonContour
                 radius: buttonContour.radius - buttonContour.radius*0.1
                 gradient: Gradient {
-                    // GradientStop { position: 0.1; color: Qt.rgba(140/255,161/255,198/255,1) }
-                    // GradientStop { position: 1.0; color: Qt.rgba(53/255,65/255,88/255,1) }
                     GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(0,0,1,0.25)) }
                     GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.4)) }
                 }
@@ -179,8 +181,6 @@ Window {
                 anchors.centerIn: buttonBevel
                 radius: buttonBevel.radius - buttonBevel.radius*0.1
                 gradient: Gradient {
-                    // GradientStop { position: 0.1; color: Qt.rgba(97/255,119/255,157/255,1) }
-                    // GradientStop { position: 1.0; color: Qt.rgba(69/255,85/255,114/255,1) }
                     GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(0,0,1,0.1)) }
                     GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.2)) }
                 }
@@ -195,21 +195,21 @@ Window {
         anchors.bottom: parent.bottom
         anchors.rightMargin: 60
         anchors.bottomMargin: 60
-
         colorTint: "#586E95"
-
-        contourColorPressed: "#7AEFFF"
+        shadowColor: "#10131A"
         contourColor: "#161A23"
 
-        // shadowVisible: false
-        // embossVisible: false
-        shadowColor: "#10131A"
-        shadowOffset: 8
-
-        // showBorders: true
+        onSwitchPressed: {
+                            stopIcon.visible = !stopIcon.visible;
+                            startIcon.visible=!startIcon.visible;
+                            if (stopIcon.visible)
+                                contourColor = Qt.binding(function() { return "#7AEFFF" })
+                            else
+                                contourColor = Qt.binding(function() { return "#161A23" })
+        }
 
         Rectangle {
-            id: stopButtonIcon
+            id: stopIcon
             width: stopButton.width*0.3
             height: width
             anchors.centerIn: parent
@@ -217,31 +217,13 @@ Window {
             border.color: "#B4CBF5"
             border.width: 5
             color: "transparent"
+            visible: false
         }
-    }
-
-    SpecialButton{
-        id: startButton
-        size: 110
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.rightMargin: 220
-        anchors.bottomMargin: 60
-
-        colorTint: "#586E95"
-
-        contourColorPressed: "#7AEFFF"
-        contourColor: "#161A23"
-
-        // shadowVisible: false
-        // embossVisible: false
-        shadowColor: "#10131A"
-
-        // showBorders: true
 
         Shape {
-
+            id: startIcon
             antialiasing: true
+            visible: true
 
             ShapePath {
                 id: startButtonPath
@@ -260,6 +242,48 @@ Window {
                 PathLine { x: startButtonPath.startX; y: startButtonPath.startY-32 }
                 PathLine { x: startButtonPath.startX; y: startButtonPath.startY }
             }
+        }
+    }
+
+    SpecialButton{
+        id: startButton
+        size: 110
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.rightMargin: 220
+        anchors.bottomMargin: 60
+        colorTint: "#586E95"
+        shadowColor: "#10131A"
+        contourColor: "#161A23"
+        property bool buttonPressed: false
+
+        Rectangle {
+            width: 6
+            height: 38
+            x: parent.width/2-16
+            y: parent.width/2-height/2
+            radius: 6
+            color: "#B4CBF5"
+        }
+
+        Rectangle {
+            width: 6
+            height: 38
+            x: parent.width/2+10
+            y: parent.width/2-height/2
+            radius: 6
+            color: "#B4CBF5"
+        }
+
+        onSwitchPressed: {
+                            buttonPressed = !buttonPressed
+                            contourColor = Qt.binding(function() { return "#7AEFFF" })
+        }
+        onSwitchReleased:{
+                            if (buttonPressed)
+                                contourColor = Qt.binding(function() { return "#59BDC9" })
+                            else
+                                contourColor = Qt.binding(function() { return "#161A23" })
         }
     }
 }

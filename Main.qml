@@ -9,8 +9,67 @@ Window {
     height: 480
     visible: true
     title: qsTr("Printer")
-    color: "#586E95"
+    color: "#455170"
     //flags: Qt.FramelessWindowHint
+
+    // TODO add colors singleton
+
+    component BarSelector: Item{
+        property alias barColor: selectorBarHighlight.color
+        property alias barWidth: selectorBarHighlight.width
+        property alias text: selectorText.text
+        property alias textColor: selectorText.color
+        property alias textSize: selectorText.font.pixelSize
+        property alias iconItem: selectorIcon.data
+
+        property bool active: false
+        property int selectorId
+
+
+        property color textHighlightColor
+
+        signal pressed()
+
+        Rectangle{
+            id: selectorHightlight
+            width: parent.width - selectorBarHighlight.width
+            height: parent.height
+            color: Qt.tint(leftBar.color, Qt.rgba(0.4,0.4,1,0.1));
+            opacity: 0.7
+            visible: active
+        }
+
+        Rectangle{
+            id: selectorBarHighlight
+            x: selectorHightlight.width
+            height: parent.height
+            // anchors.right: selectorHightlight.right
+            visible: active
+        }
+
+        Column {
+            id: iconColumn
+            anchors.centerIn: selectorHightlight
+            spacing: 8
+            Item{
+                id:selectorIcon
+                width: selectorHightlight.width/2
+                height: selectorHightlight.width/2
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            Text{
+                id: selectorText
+                font.bold: true
+            }
+        }
+
+        TapHandler {
+            id: tapHandler
+            onTapped: {
+                parent.pressed();
+            }
+        }
+    }
 
     Rectangle {
         id: leftBar
@@ -19,12 +78,97 @@ Window {
         color: "#2A3342"
         anchors.left: parent.left
 
+        property int currentSelection: 1
+
         Rectangle {
             id: leftBarSeparator
             width: 5
             height: leftBar.height
             anchors.right: leftBar.right
-            color: "#7F99C5"
+            color: "#687DA2"
+        }
+
+        BarSelector{
+            id: printSelector
+            selectorId: 1
+            active: leftBar.currentSelection === selectorId
+
+            width: parent.width
+            height: parent.height/3
+            barWidth: leftBarSeparator.width
+            anchors.left: parent.left
+            barColor: "#4BE9FF"
+
+            iconItem: Rectangle{
+                width: 40
+                height: width
+                color: "#546286"
+            }
+
+            text: "PRINT"
+            textColor: active ? "#7AEFFF" : "#546286"
+            textSize: 13
+
+            onPressed: {
+                parent.currentSelection = Qt.binding(function() { return selectorId });
+                // console.log("printSelector Button Pressed, current selection: ", parent.currentSelection);
+            }
+        }
+
+        BarSelector{
+            id: moveSelector
+            selectorId: 2
+            active: leftBar.currentSelection === selectorId
+
+            y: parent.height/3
+            width: parent.width
+            height: parent.height/3
+            barWidth: leftBarSeparator.width
+            anchors.left: parent.left
+            barColor: "#4BE9FF"
+
+            iconItem: Rectangle{
+                width: 40
+                height: width
+                color: "#546286"
+            }
+
+            text: "MOVE"
+            textColor: active ? "#7AEFFF" : "#546286"
+            textSize: 13
+
+            onPressed: {
+                parent.currentSelection = Qt.binding(function() { return selectorId });
+                // console.log("moveSelector Button Pressed, current selection: ", parent.currentSelection);
+            }
+        }
+
+        BarSelector{
+            id: settingsSelector
+            selectorId: 3
+            active: leftBar.currentSelection === selectorId
+
+            y: parent.height/3*2
+            width: parent.width
+            height: parent.height/3
+            barWidth: leftBarSeparator.width
+            anchors.left: parent.left
+            barColor: "#4BE9FF"
+
+            iconItem: Rectangle{
+                width: 40
+                height: width
+                color: "#546286"
+            }
+
+            text: "SETTINGS"
+            textColor: active ? "#7AEFFF" : "#546286"
+            textSize: 13
+
+            onPressed: {
+                parent.currentSelection = Qt.binding(function() { return selectorId });
+                // console.log("settingsSelector Button Pressed, current selection: ", parent.currentSelection);
+            }
         }
     }
 
@@ -33,7 +177,7 @@ Window {
         anchors.top: parent.top
         anchors.topMargin: parent.height*0.25/2+parent.height*0.05
         anchors.left: leftBar.right
-        anchors.leftMargin: 20
+        anchors.leftMargin: 25
 
         Rectangle {
             id: mainView
@@ -41,12 +185,12 @@ Window {
             width: 300
             height: mainWindow.height*0.75
             radius: 20
-            border.color: "#7F99C5"
+            border.color: "#455170"
             border.width: 5
             color: "#2A3342"
             gradient: Gradient {
-                        GradientStop { position: 0.3; color: "#6D82A5" }
-                        GradientStop { position: 1.0; color: "#2A3342" }
+                        GradientStop { position: 0.1; color: "#3A4455" }
+                        GradientStop { position: 0.8; color: "#1C212B" }
                     }
         }
 
@@ -56,9 +200,10 @@ Window {
             source: mainView
             anchors.fill: mainView
             shadowEnabled: true
-            shadowColor: "#191F2A"
-            blurMultiplier: 1.2
-            shadowVerticalOffset: 14
+            // shadowColor: "#191F2A"
+            shadowColor: "#2D3544"
+            shadowScale: 1
+            shadowVerticalOffset: 12
             visible: true
         }
 
@@ -69,7 +214,7 @@ Window {
             anchors.fill: mainView
             brightness: 0.3
             blurEnabled: true
-            blurMax: 32
+            blurMultiplier: 2
             blur: 1
             visible: true
         }
@@ -103,11 +248,11 @@ Window {
             id: buttonEmboss
             source:  buttonOuter
             anchors.fill: parent
-            brightness: 0.5
             blurEnabled: true
-            blurMax: 36
             blur: 1
-            blurMultiplier: 2
+            blurMax: 64
+            // blurMultiplier: 3
+            brightness: blurEnabled ? 0.4 : 0
         }
 
         MultiEffect {
@@ -115,8 +260,8 @@ Window {
             source: buttonOuter
             anchors.fill: parent
             shadowEnabled: true
-            blurMultiplier: 1.2
             shadowVerticalOffset: 12
+            // shadowScale: 1.02
         }
 
         Rectangle{
@@ -195,9 +340,9 @@ Window {
         anchors.bottom: parent.bottom
         anchors.rightMargin: 60
         anchors.bottomMargin: 60
-        colorTint: "#586E95"
-        shadowColor: "#10131A"
+        colorTint: "#455170"
         contourColor: "#161A23"
+        shadowColor: "#2D3544"
 
         onSwitchPressed: {
                             stopIcon.visible = !stopIcon.visible;
@@ -252,9 +397,12 @@ Window {
         anchors.bottom: parent.bottom
         anchors.rightMargin: 220
         anchors.bottomMargin: 60
-        colorTint: "#586E95"
-        shadowColor: "#10131A"
+        colorTint: "#455170"
         contourColor: "#161A23"
+        // shadowColor: "#2B3343"
+        shadowColor: "#2D3544"
+
+
         property bool buttonPressed: false
 
         Rectangle {

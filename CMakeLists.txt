@@ -13,11 +13,20 @@ qt_add_executable(appSquareLinePrinter
     main.cpp
 )
 
+set_source_files_properties(Style.qml
+    PROPERTIES QT_QML_SINGLETON_TYPE TRUE
+)
+
 qt_add_qml_module(appSquareLinePrinter
     URI SquareLinePrinter
     VERSION 1.0
     QML_FILES
         Main.qml
+        Style.qml
+        PrinterPage.qml
+        MovePage.qml
+        SettingsPage.qml
+        RESOURCES
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

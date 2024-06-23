@@ -77,6 +77,26 @@ Window {
         }
     }
 
+    Loader{
+        id: mainLoader
+        anchors.right: parent.right
+        anchors.left:leftBar.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        source: {
+            switch(leftBar.currentSelection){
+                case 1:
+                    return "PrinterPage.qml";
+                case 2:
+                    return "MovePage.qml";
+                case 3:
+                    return "SettingsPage.qml";
+                default:
+                    return "";
+            }
+        }
+    }
+
     Rectangle {
         id: leftBar
         width: 80
@@ -91,7 +111,7 @@ Window {
             width: 5
             height: leftBar.height
             anchors.right: leftBar.right
-            color: "#687DA2"
+            color: Style.barSeparatorColor
         }
 
         BarSelector{
@@ -177,23 +197,4 @@ Window {
         }
     }
 
-    Loader{
-        id: mainLoader
-        anchors.right: parent.right
-        anchors.left:leftBar.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        source: {
-            switch(leftBar.currentSelection){
-                case 1:
-                    return "PrinterPage.qml";
-                case 2:
-                    return "MovePage.qml";
-                case 3:
-                    return "SettingsPage.qml";
-                default:
-                    return "";
-            }
-        }
-    }
 }

@@ -5,9 +5,9 @@ import QtQuick.Shapes
 
 Item{
     anchors.fill: parent
-    component SpecialButton: Item {
 
-        id: root
+    component SpecialButton: Item {
+        id: specialButtonRoot
         property int size
 
         property color colorTint
@@ -23,9 +23,6 @@ Item{
         signal switchPressed()
         signal switchReleased()
 
-        // onSwitchPressed: {console.log("Button Pressed")}
-        // onSwitchReleased: {console.log("Button Released")}
-
         width: size
         height: size
 
@@ -35,9 +32,9 @@ Item{
             anchors.fill: parent
             blurEnabled: true
             blur: 1
-            blurMax: 64
-            // blurMultiplier: 3
-            brightness: blurEnabled ? 0.4 : 0
+            blurMax: Style.embossBlurMax
+            blurMultiplier: Style.embossBlurMultiplier
+            brightness: blurEnabled ? Style.embossBrightness : 0
         }
 
         MultiEffect {
@@ -45,7 +42,7 @@ Item{
             source: buttonOuter
             anchors.fill: parent
             shadowEnabled: true
-            shadowVerticalOffset: 12
+            shadowVerticalOffset: Style.shadowOffset
             // shadowScale: 1.02
         }
 
@@ -56,9 +53,8 @@ Item{
             anchors.fill: parent
             border.color: "red"
             border.width: 1
-            //color: "transparent"
-            color: Qt.rgba(0,0,0,0)
-            visible: root.showBorders
+            color: "transparent"
+            visible: specialButtonRoot.showBorders
         }
 
         Rectangle {
@@ -80,8 +76,8 @@ Item{
                 height: buttonOuter.height*0.91
                 radius: buttonOuter.radius-buttonOuter.radius*0.1
                 anchors.centerIn: buttonOuter
-                onPressed : root.switchPressed()
-                onReleased : root.switchReleased()
+                onPressed : specialButtonRoot.switchPressed()
+                onReleased : specialButtonRoot.switchReleased()
                 background: Rectangle {
                     id: buttonContourBkg
                     radius: parent.radius
@@ -97,7 +93,7 @@ Item{
                 anchors.centerIn: buttonContour
                 radius: buttonContour.radius - buttonContour.radius*0.1
                 gradient: Gradient {
-                    GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(0,0,1,0.25)) }
+                    GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(220/255,30/255,1,0.4)) }
                     GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.4)) }
                 }
                 visible: true
@@ -110,17 +106,41 @@ Item{
                 anchors.centerIn: buttonBevel
                 radius: buttonBevel.radius - buttonBevel.radius*0.1
                 gradient: Gradient {
-                    GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(0,0,1,0.1)) }
-                    GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.2)) }
+                    GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(220/255,30/255,1,0.2)) }
+                    GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.1)) }
                 }
             }
+        }
+    }
+
+     component SpecialDisplay: Item {
+        id: specialDisplayRoot
+
+        Rectangle{
+            width:parent.width
+            height:parent.height
+            anchors.fill: parent
+            border.color: "red"
+            border.width: 1
+            color: "transparent"
+            visible: false
+        }
+
+        Rectangle {
+            width: parent.width
+            height: parent.heigh
+            anchors.fill: parent
+            radius: 16
+            border.color: "#576683"
+            border.width: 3
+            color: Style.darkBkgColor
         }
     }
 
     Item {
         id: mainViewItem
         anchors.top: parent.top
-        anchors.topMargin: parent.height*0.25/2+parent.height*0.05
+        anchors.topMargin: parent.height*0.170
         anchors.left: parent.left
         anchors.leftMargin: 25
 
@@ -128,11 +148,11 @@ Item{
             id: mainViewEmboss
             source:  mainView
             anchors.fill: mainView
-            brightness: 0.3
             blurEnabled: true
-            blurMultiplier: 2
             blur: 1
-            visible: true
+            blurMax: Style.embossBlurMax
+            blurMultiplier: Style.embossBlurMultiplier
+            brightness: blurEnabled ? Style.embossBrightness : 0
         }
 
         MultiEffect {
@@ -142,8 +162,7 @@ Item{
             shadowEnabled: true
             shadowColor: Style.shadowColor
             shadowScale: 1
-            shadowVerticalOffset: 12
-            visible: true
+            shadowVerticalOffset: Style.shadowOffset
         }
 
         Rectangle {
@@ -163,11 +182,11 @@ Item{
 
     SpecialButton{
         id: stopButton
-        size: 110
+        size: 120
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.rightMargin: 60
-        anchors.bottomMargin: 60
+        anchors.bottomMargin: 45
         colorTint: Style.baseColor
         contourColor: Style.buttonOffColor
         shadowColor: Style.shadowColor
@@ -211,8 +230,8 @@ Item{
                 startX: startButton.width/2-10
                 startY: startButton.width/2+16
 
-                PathLine { x: startButtonPath.startX+26; y: startButtonPath.startY-16 }
-                PathLine { x: startButtonPath.startX; y: startButtonPath.startY-32 }
+                PathLine { x: startButtonPath.startX+26; y: startButtonPath.startY-18 }
+                PathLine { x: startButtonPath.startX; y: startButtonPath.startY-36 }
                 PathLine { x: startButtonPath.startX; y: startButtonPath.startY }
             }
         }
@@ -220,11 +239,11 @@ Item{
 
     SpecialButton{
         id: startButton
-        size: 110
+        size: 120
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.rightMargin: 220
-        anchors.bottomMargin: 60
+        anchors.bottomMargin: 45
         colorTint: Style.baseColor
         contourColor: Style.buttonOffColor
         shadowColor: Style.shadowColor
@@ -234,7 +253,7 @@ Item{
 
         Rectangle {
             width: 6
-            height: 38
+            height: 40
             x: parent.width/2-16
             y: parent.width/2-height/2
             radius: 6
@@ -243,7 +262,7 @@ Item{
 
         Rectangle {
             width: 6
-            height: 38
+            height: 40
             x: parent.width/2+10
             y: parent.width/2-height/2
             radius: 6
@@ -262,4 +281,23 @@ Item{
         }
     }
 
+    SpecialDisplay {
+        id: topSpecialDisplay
+        width: 335
+        height: 85
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.rightMargin: 30
+        anchors.topMargin: parent.height*0.170
+    }
+
+    SpecialDisplay {
+        id: bottomSpecialDisplay
+        width: 335
+        height: 85
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.rightMargin: 30
+        anchors.topMargin: parent.height*0.380
+    }
 }

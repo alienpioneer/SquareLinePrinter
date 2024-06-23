@@ -127,13 +127,22 @@ Item{
         }
 
         Rectangle {
+            id: dispayBkg
             width: parent.width
             height: parent.heigh
             anchors.fill: parent
             radius: 16
-            border.color: "#576683"
+            border.color: Style.borderColor
             border.width: 3
             color: Style.darkBkgColor
+        }
+
+        Rectangle {
+            id: dispalySeparator
+            width: 2
+            height: dispayBkg.height-dispayBkg.height*0.4
+            anchors.centerIn: dispayBkg
+            color: Style.displaySeparatorColor
         }
     }
 
@@ -192,12 +201,12 @@ Item{
         shadowColor: Style.shadowColor
 
         onSwitchPressed: {
-                            stopIcon.visible = !stopIcon.visible;
-                            startIcon.visible=!startIcon.visible;
-                            if (stopIcon.visible)
-                                contourColor = Qt.binding(function() { return Style.highlightColor })
-                            else
-                                contourColor = Qt.binding(function() { return Style.buttonOffColor })
+            stopIcon.visible = !stopIcon.visible;
+            startIcon.visible=!startIcon.visible;
+            if (stopIcon.visible)
+                contourColor = Qt.binding(function() { return Style.highlightColor })
+            else
+                contourColor = Qt.binding(function() { return Style.buttonOffColor })
         }
 
         Rectangle {
@@ -284,20 +293,20 @@ Item{
     SpecialDisplay {
         id: topSpecialDisplay
         width: 335
-        height: 85
+        height: 82
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.rightMargin: 30
+        anchors.rightMargin: 25
         anchors.topMargin: parent.height*0.170
     }
 
     SpecialDisplay {
         id: bottomSpecialDisplay
         width: 335
-        height: 85
+        height: 82
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.rightMargin: 30
-        anchors.topMargin: parent.height*0.380
+        anchors.top: topSpecialDisplay.bottom
+        anchors.rightMargin: 25
+        anchors.topMargin: 20
     }
 }

@@ -11,6 +11,11 @@ Window {
     title: qsTr("Printer")
     color: Style.baseColor
     //flags: Qt.FramelessWindowHint
+    // maximumHeight: height
+    // maximumWidth: width
+
+    // minimumHeight: height
+    // minimumWidth: width
 
     component BarSelector: Item{
         property alias barColor: selectorBarHighlight.color
@@ -111,7 +116,7 @@ Window {
             width: 5
             height: leftBar.height
             anchors.right: leftBar.right
-            color: Style.barSeparatorColor
+            color: Style.borderColor
         }
 
         BarSelector{
@@ -125,10 +130,29 @@ Window {
             anchors.left: parent.left
             barColor: Style.highlightColor
 
-            iconItem: Rectangle{
-                width: 40
-                height: width
-                color: printSelector.active ? Style.highlightColor : Style.barIconColor
+            iconItem: Shape {
+                id: printIcon
+                antialiasing: true
+                anchors.centerIn: parent
+                visible: true
+
+                ShapePath {
+                    id: startButtonPath
+                    fillColor: printSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeColor: printSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 5
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: -14
+                    startY: 12
+
+                    PathLine { x: startButtonPath.startX+26; y: startButtonPath.startY-16 }
+                    PathLine { x: startButtonPath.startX; y: startButtonPath.startY-32 }
+                    PathLine { x: startButtonPath.startX; y: startButtonPath.startY }
+                }
             }
 
             text: "PRINT"
@@ -197,4 +221,18 @@ Window {
         }
     }
 
+    Rectangle {
+        id: topDisplay
+        height: 50
+        anchors.top: parent.top
+        anchors.topMargin: -12
+        anchors.right: parent.right
+        anchors.rightMargin: 25
+        anchors.left: parent.left
+        anchors.leftMargin: 105
+        radius: 16
+        border.color: Style.borderColor
+        border.width: 3
+        color: Style.darkBkgColor
+    }
 }

@@ -10,5 +10,6 @@ Item {
         border.color: "green"
         border.width: 2
         color: "transparent"
+        visible: false
     }
 }

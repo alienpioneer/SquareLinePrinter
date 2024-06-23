@@ -17,6 +17,8 @@ QtObject {
     property color highlightColor: "#00D2ff"
 
     property color darkBkgColor: "#191D26"
+    property color borderColor: "#576683"
+    property color displaySeparatorColor: "#2F343F"
 
     property color shadowColor: "#202634"
     property int shadowOffset: 14

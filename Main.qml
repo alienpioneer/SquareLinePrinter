@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Effects
 import QtQuick.Shapes
+import QtQuick.Layouts
 
 Window {
     id: mainWindow
@@ -10,19 +11,18 @@ Window {
     visible: true
     title: qsTr("Printer")
     color: Style.baseColor
-    //flags: Qt.FramelessWindowHint
+
     // maximumHeight: height
     // maximumWidth: width
-
     // minimumHeight: height
     // minimumWidth: width
 
+    // visibility: Window.FullScreen
+    // flags: Qt.FramelessWindowHint
+
     component BarSelector: Item{
-        property alias barColor: selectorBarHighlight.color
         property alias barWidth: selectorBarHighlight.width
         property alias text: selectorText.text
-        property alias textColor: selectorText.color
-        property alias textSize: selectorText.font.pixelSize
         property alias iconItem: selectorIcon.data
 
         property bool active: false
@@ -44,6 +44,7 @@ Window {
             x: selectorHightlight.width
             height: parent.height
             visible: active
+            color: Style.highlightColor
         }
 
         MultiEffect {
@@ -51,26 +52,31 @@ Window {
             source:  iconColumn
             anchors.fill: iconColumn
             brightness: 0.5
-            blurEnabled: true
-            blurMax: 64
+            blurEnabled: Style.enableEffects
+            blurMax: Style.embossBlurMax
             blur: 1
             opacity: 0.8
             visible: active
         }
 
-        Column {
+        ColumnLayout {
             id: iconColumn
             anchors.centerIn: selectorHightlight
             spacing: 8
+
             Item{
                 id:selectorIcon
                 width: selectorHightlight.width/2
                 height: selectorHightlight.width/2
-                anchors.horizontalCenter: parent.horizontalCenter
+                Layout.alignment: Qt.AlignCenter
             }
             Text{
                 id: selectorText
-                font.bold: true
+                font {
+                    bold: true
+                    pixelSize: Style.textSize
+                }
+                color: active ? Style.highlightColor : Style.barIconColor
             }
         }
 
@@ -124,11 +130,12 @@ Window {
             selectorId: 1
             active: leftBar.currentSelection === selectorId
 
+            text: "PRINT"
+
             width: parent.width
             height: parent.height/3
             barWidth: leftBarSeparator.width
             anchors.left: parent.left
-            barColor: Style.highlightColor
 
             iconItem: Shape {
                 id: printIcon
@@ -139,7 +146,7 @@ Window {
                 ShapePath {
                     id: startButtonPath
                     fillColor: printSelector.active ? Style.highlightColor : Style.barIconColor
-                    strokeColor: printSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeColor: fillColor
                     strokeWidth: 5
 
                     strokeStyle: ShapePath.SolidLine
@@ -147,17 +154,13 @@ Window {
                     joinStyle: ShapePath.RoundJoin
 
                     startX: -14
-                    startY: 12
+                    startY: 10
 
-                    PathLine { x: startButtonPath.startX+26; y: startButtonPath.startY-16 }
-                    PathLine { x: startButtonPath.startX; y: startButtonPath.startY-32 }
+                    PathLine { x: startButtonPath.startX+24; y: startButtonPath.startY-14 }
+                    PathLine { x: startButtonPath.startX; y: startButtonPath.startY-28 }
                     PathLine { x: startButtonPath.startX; y: startButtonPath.startY }
                 }
             }
-
-            text: "PRINT"
-            textColor: active ? Style.highlightColor : Style.barIconColor
-            textSize: Style.textSize
 
             onPressed: {
                 parent.currentSelection = Qt.binding(function() { return selectorId });
@@ -171,22 +174,114 @@ Window {
             selectorId: 2
             active: leftBar.currentSelection === selectorId
 
+            text: "MOVE"
+
             y: parent.height/3
             width: parent.width
             height: parent.height/3
             barWidth: leftBarSeparator.width
             anchors.left: parent.left
-            barColor: Style.highlightColor
 
-            iconItem: Rectangle{
-                width: 40
-                height: width
-                color: moveSelector.active ? Style.highlightColor : Style.barIconColor
+            iconItem: Shape {
+                id: moveIcon
+                antialiasing: true
+                anchors.centerIn: parent
+                visible: true
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: moveSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 4
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 0
+                    startY: -16
+
+                    PathLine { x: 0 ; y: 16 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: moveSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 4
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: -16
+                    startY: 0
+
+                    PathLine { x: 16 ; y: 0 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: moveSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 4
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: -10
+                    startY: -6
+
+                    PathLine { x: -16 ; y: 0 }
+                    PathLine { x: -10 ; y: 6 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: moveSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 4
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 10
+                    startY: -6
+
+                    PathLine { x: 16 ; y: 0 }
+                    PathLine { x: 10 ; y: 6 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: moveSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 4
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: -6
+                    startY: 10
+
+                    PathLine { x: 0 ; y: 16 }
+                    PathLine { x: 6 ; y: 10 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: moveSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 4
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: -6
+                    startY: -10
+
+                    PathLine { x: 0 ; y: -16 }
+                    PathLine { x: 6 ; y: -10 }
+                }
             }
-
-            text: "MOVE"
-            textColor: active ? Style.highlightColor : Style.barIconColor
-            textSize: Style.textSize
 
             onPressed: {
                 parent.currentSelection = Qt.binding(function() { return selectorId });
@@ -198,22 +293,149 @@ Window {
             selectorId: 3
             active: leftBar.currentSelection === selectorId
 
+            text: "SETTINGS"
+
             y: parent.height/3*2
             width: parent.width
             height: parent.height/3
             barWidth: leftBarSeparator.width
             anchors.left: parent.left
-            barColor: Style.highlightColor
 
-            iconItem: Rectangle{
-                width: 40
-                height: width
-                color: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+            iconItem: Shape {
+                id: settingsIcon
+                antialiasing: true
+                anchors.centerIn: parent
+                visible: true
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 7
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 0
+                    startY: -12
+
+                    PathArc { x: 0 ; y: 6 ; radiusX: 1; radiusY: 1}
+                    PathArc { x: 0 ; y: -12 ; radiusX: 1; radiusY: 1}
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 6
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.SquareCap
+
+                    startX: 0
+                    startY: -15
+
+                    PathLine { x: 0 ; y: -14 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 6
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.SquareCap
+
+                    startX: 0
+                    startY: 8
+
+                    PathLine { x: 0 ; y: 9 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 6
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.SquareCap
+
+                    startX: 8
+                    startY: -12
+
+                    PathLine { x: 9 ; y: -11 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 6
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.SquareCap
+
+                    startX: 10
+                    startY: -3
+
+                    PathLine { x: 11 ; y: -3 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 6
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.SquareCap
+
+                    startX: 8
+                    startY: 4
+
+                    PathLine { x: 9 ; y: 5 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 6
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.SquareCap
+
+                    startX: -8
+                    startY: -12
+
+                    PathLine { x: -9 ; y: -11 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 6
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.SquareCap
+
+                    startX: -8
+                    startY: 4
+
+                    PathLine { x: -9 ; y: 5 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: settingsSelector.active ? Style.highlightColor : Style.barIconColor
+                    strokeWidth: 6
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.SquareCap
+
+                    startX: -10
+                    startY: -3
+
+                    PathLine { x: -11 ; y: -3 }
+                }
+
             }
-
-            text: "SETTINGS"
-            textColor: active ? Style.highlightColor : Style.barIconColor
-            textSize: 13
 
             onPressed: {
                 parent.currentSelection = Qt.binding(function() { return selectorId });
@@ -224,15 +446,49 @@ Window {
     Rectangle {
         id: topDisplay
         height: 50
-        anchors.top: parent.top
-        anchors.topMargin: -12
-        anchors.right: parent.right
-        anchors.rightMargin: 25
-        anchors.left: parent.left
-        anchors.leftMargin: 105
+        anchors{
+            top: parent.top
+            topMargin: -12
+            right: parent.right
+            rightMargin: 25
+            left: parent.left
+            leftMargin: 105
+        }
+
         radius: 16
-        border.color: Style.borderColor
         border.width: 3
+
+        border.color: Style.borderColor
         color: Style.darkBkgColor
+
+        Text {
+            anchors {
+                left: parent.left
+                leftMargin: 30
+                top: parent.top
+                topMargin: 15
+            }
+
+
+            font {
+                pixelSize: 18
+                bold: true
+            }
+
+            color: Style.displayTextColor
+
+            text: {
+                switch(leftBar.currentSelection){
+                    case 1:
+                        return "The current file is being printed";
+                    case 2:
+                        return "MovePage.qml";
+                    case 3:
+                        return "Adjust the print parameters";
+                    default:
+                        return "";
+                }
+            }
+        }
     }
 }

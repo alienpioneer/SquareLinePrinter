@@ -9,17 +9,28 @@ Item {
     id: settingsPage
     anchors.fill: parent
 
+    // Check Rectangle
+    Rectangle{
+        width:parent.width
+        height:parent.height
+        anchors.fill: parent
+        border.color: "green"
+        border.width: 2
+        color: "transparent"
+        visible: false
+    }
+
     component SpecialSwitch: ColumnLayout {
 
         id: rootSpecialSwitch
 
-        property string switchText: "TEST"
+        property string switchText: ""
         property bool switchChecked: false
 
         Text {
             text: rootSpecialSwitch.switchText
             color: Style.displayTextAltColor
-            font.pixelSize: 16
+            font.pixelSize: 17
             font.bold: true
             Layout.alignment: Qt.AlignCenter
         }
@@ -87,128 +98,153 @@ Item {
         }
     }
 
-    component CustomTumbler: Tumbler {
-        id: rootCustomTumbler
-
-        background: Rectangle {
-            id: bkgRect
-            implicitWidth: 150
-            implicitHeight: 150
-            radius: 20
-            border.width: 5
-            color: Style.darkBkgColor
-            border.color: Style.baseColor
-            clip: true
-        }
-
-        contentItem: ListView {
-            id: listView
-            model: rootCustomTumbler.model
-
-            //delegate:
-
-            clip: true
-            snapMode: ListView.SnapToItem
-            boundsBehavior: Flickable.StopAtBounds
-            // spacing: 1
-        }
-    }
-
-    component ThumblerBackground: Rectangle {
-        implicitWidth: 150
-        implicitHeight: 150
-        radius: 20
-        border.width: 5
-        color: Style.darkBkgColor
-        border.color: Style.baseColor
-    }
-
-    component ThumblerDelegate: Rectangle {
-        id: thumblerDelegate
-
-        required property int index
-        required property string modelData
-
-        implicitWidth: 150
-        implicitHeight: 40
-        border.width: 5
-        border.color: "black"
-        color: "transparent"
-        clip: true
-
-        Text {
-            anchors.fill: thumblerDelegate
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            text: thumblerDelegate. modelData
-            color: Style.displayTextAltColor
-            font.pixelSize: 16
-            font.bold: true
-        }
-    }
-
-    Rectangle {
-        id: thumblerBkg
-
-        anchors {
-            top: parent.top
-            topMargin: parent.height*0.2
-            left: parent.left
-            leftMargin: 25
-        }
+    component CustomTumbler: Item {
+        id: rootTumbler
 
         implicitWidth: 150
         implicitHeight: 150
-        radius: 20
-        border.width: 5
-        border.color: Style.baseColor
-        color: Style.darkBkgColor
-        clip: true
 
-        Rectangle {
-            width: thumblerBkg.implicitWidth-thumblerBkg.border.width*2
-            height: (thumblerBkg.height-thumblerBkg.border.width*2)/3
-            anchors.centerIn: thumblerBkg
-            color: Style.baseColorLight
-        }
+        property string title: ""
+        property variant model: []
 
-        Tumbler {
-            id: bedTempTumbler
-            anchors.centerIn: thumblerBkg
+        // MultiEffect {
+        //     id: rootTumblerEmboss
+        //     source:  tumblerContainer
+        //     anchors.fill: tumblerContainer
+        //     blurEnabled: Style.enableEffects
+        //     blur: 1
+        //     blurMax: Style.embossBlurMax
+        //     blurMultiplier: Style.embossBlurMultiplier
+        //     brightness: blurEnabled ? Style.embossBrightness : 0
+        // }
 
-            implicitWidth: thumblerBkg.width
-            implicitHeight: thumblerBkg.height-thumblerBkg.border.width*2
+        // MultiEffect {
+        //     id: rootTumblerDropShadow
+        //     source: tumblerContainer
+        //     anchors.fill: tumblerContainer
+        //     shadowEnabled: Style.enableEffects
+        //     shadowColor: Style.shadowColor
+        //     shadowScale: 1
+        //     shadowVerticalOffset: Style.shadowOffset
+        // }
 
-            //Background+borders dictates the implicit size !!!
-            visibleItemCount : 3
-            model:["60°","75°", "80°", "90°"]
+        Column {
+            spacing: 10
 
-            delegate: Text {
-                required property int index
-                required property string modelData
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                text: modelData
+            Text {
+                text: rootTumbler.title
                 color: Style.displayTextAltColor
-                font.pixelSize: Math.max(0.7, 1 - Math.abs(Tumbler.displacement))*28
+                font.pixelSize: 20
                 font.bold: true
+                anchors.horizontalCenter: tumblerContainer.horizontalCenter
+            }
+
+            Rectangle {
+                id: tumblerContainer
+
+                implicitWidth: rootTumbler.width
+                implicitHeight: rootTumbler.height
+
+                radius: 20
+                border.width: 5
+                border.color: Style.baseColor
+                color: Style.darkBkgColor
+                clip: true
+
+                Rectangle {
+                    implicitWidth: tumblerContainer.width-tumblerContainer.border.width*2
+                    implicitHeight: (tumblerContainer.height-tumblerContainer.border.width*2)/3
+                    anchors.centerIn: tumblerContainer
+                    color: Style.barIconColor
+                }
+
+                Tumbler {
+                    id: customTumbler
+                    anchors.centerIn: tumblerContainer
+
+                    implicitWidth: tumblerContainer.width
+                    implicitHeight: tumblerContainer.height-tumblerContainer.border.width*2
+
+                    //Background+borders dictates the implicit size !!!
+                    visibleItemCount : 3
+                    model: rootTumbler.model
+
+                    delegate: Text {
+                        required property int index
+                        required property string modelData
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        text: modelData
+                        color: Style.displayTextAltColor
+                        font.pixelSize: Math.max(0.7, 1 - Math.abs(Tumbler.displacement))*28
+                        font.bold: true
+                    }
+                }
             }
         }
     }
 
-    // Check Rectangle
-    Rectangle{
-        width:parent.width
-        height:parent.height
-        anchors.fill: parent
-        border.color: "green"
-        border.width: 2
-        color: "transparent"
-        visible: false
+    // Tumblers
+    Row {
+        id: tumblersRow
+        spacing: 30
+
+        anchors {
+            top: parent.top
+            topMargin: 70
+            left: parent.left
+            leftMargin: 25
+        }
+
+        CustomTumbler {
+            id: headTempTumbler
+            title: "HEAD TEMP."
+            model:["170°", "220°", "240°","255°"]
+        }
+
+        CustomTumbler {
+            id: bedTempTumbler
+            title: "BED TEMP."
+            model:["60°","75°", "80°", "90°"]
+        }
+
+        CustomTumbler {
+            id: materialTempTumbler
+            title: "MATERIAL"
+            model:["PLA","ABS", "PETG", "NYL", "FLEX"]
+        }
+    }
+
+    Text {
+        text: "PRINT SPEED"
+        color: Style.displayTextAltColor
+        font.pixelSize: 18
+        font.bold: true
+        anchors {
+            left: sliderContainer.left
+            leftMargin: 10
+            bottom: sliderContainer.top
+            bottomMargin: 5
+        }
+    }
+
+    Text {
+        text: `${Math.round(printSpeedSlider.value)} %`
+        color: Style.displayTextAltColor
+        font.pixelSize: 18
+        font.bold: true
+        anchors {
+            right: sliderContainer.right
+            rightMargin: 10
+            bottom: sliderContainer.top
+            bottomMargin: 5
+        }
     }
 
     // Bottom big Slider
     Rectangle{
+        id: sliderContainer
+
         width:480
         height:48
 
@@ -266,8 +302,9 @@ Item {
         }
     }
 
+    // Right side switches
     Column {
-        spacing: 30
+        spacing: 33
 
         anchors {
             right: settingsPage.right
@@ -337,26 +374,7 @@ Item {
 //     }
 // }
 
-// MultiEffect {
-//     id: rootThumblerEmboss
-//     source:  thumblersRow
-//     anchors.fill: thumblersRow
-//     blurEnabled: Style.enableEffects
-//     blur: 1
-//     blurMax: Style.embossBlurMax
-//     blurMultiplier: Style.embossBlurMultiplier
-//     brightness: blurEnabled ? Style.embossBrightness : 0
-// }
 
-// MultiEffect {
-//     id: rootThumblerDropShadow
-//     source: thumblersRow
-//     anchors.fill: thumblersRow
-//     shadowEnabled: Style.enableEffects
-//     shadowColor: Style.shadowColor
-//     shadowScale: 1
-//     shadowVerticalOffset: Style.shadowOffset
-// }
 
 
 // RowLayout {

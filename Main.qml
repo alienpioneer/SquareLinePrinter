@@ -20,6 +20,8 @@ Window {
     // visibility: Window.FullScreen
     // flags: Qt.FramelessWindowHint
 
+
+    // Selector type for the left bar
     component BarSelector: Item{
         property alias barWidth: selectorBarHighlight.width
         property alias text: selectorText.text
@@ -88,6 +90,7 @@ Window {
         }
     }
 
+    // Main view
     Loader{
         id: mainLoader
         anchors.right: parent.right
@@ -108,6 +111,7 @@ Window {
         }
     }
 
+    // Left selection bar
     Rectangle {
         id: leftBar
         width: 80
@@ -443,9 +447,11 @@ Window {
         }
     }
 
+    // Top display
     Rectangle {
         id: topDisplay
-        height: 50
+        height: 60
+
         anchors{
             top: parent.top
             topMargin: -12

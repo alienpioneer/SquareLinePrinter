@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls.Basic
 import QtQuick.Layouts
+import QtQuick.Shapes
 import QtQuick.Effects
 
 pragma ComponentBehavior: Bound
@@ -89,16 +90,17 @@ Item {
                     NumberAnimation { duration: 100 }
                 }
             }
-        }
 
-        TapHandler {
-            onTapped: {
-                rootSpecialSwitch.switchChecked = !rootSpecialSwitch.switchChecked;
+            MouseArea {
+                anchors.fill: switchBackground
+                onClicked: {
+                    rootSpecialSwitch.switchChecked = !rootSpecialSwitch.switchChecked;
+                }
             }
         }
     }
 
-    component CustomTumbler: Item {
+    component CustomTumblerGroup: Item {
         id: rootTumbler
 
         implicitWidth: 150
@@ -106,79 +108,147 @@ Item {
 
         property string title: ""
         property variant model: []
+        property string buttonText : ""
+        property bool selected: false
 
-        // MultiEffect {
-        //     id: rootTumblerEmboss
-        //     source:  tumblerContainer
-        //     anchors.fill: tumblerContainer
-        //     blurEnabled: Style.enableEffects
-        //     blur: 1
-        //     blurMax: Style.embossBlurMax
-        //     blurMultiplier: Style.embossBlurMultiplier
-        //     brightness: blurEnabled ? Style.embossBrightness : 0
-        // }
+        MultiEffect {
+            id: rootTumblerEmboss
+            source:  tumblerContainer
+            anchors.fill: tumblerContainer
+            blurEnabled: Style.enableEffects
+            blur: 1
+            blurMax: Style.embossBlurMax
+            blurMultiplier: Style.embossBlurMultiplier
+            brightness: blurEnabled ? Style.embossBrightness : 0
+        }
 
-        // MultiEffect {
-        //     id: rootTumblerDropShadow
-        //     source: tumblerContainer
-        //     anchors.fill: tumblerContainer
-        //     shadowEnabled: Style.enableEffects
-        //     shadowColor: Style.shadowColor
-        //     shadowScale: 1
-        //     shadowVerticalOffset: Style.shadowOffset
-        // }
+        MultiEffect {
+            id: rootTumblerDropShadow
+            source: tumblerContainer
+            anchors.fill: tumblerContainer
+            shadowEnabled: Style.enableEffects
+            shadowColor: Style.shadowColor
+            shadowScale: 1
+            shadowVerticalOffset: Style.shadowOffset
+        }
 
-        Column {
-            spacing: 10
-
-            Text {
-                text: rootTumbler.title
-                color: Style.displayTextAltColor
-                font.pixelSize: 20
-                font.bold: true
-                anchors.horizontalCenter: tumblerContainer.horizontalCenter
+        Text {
+            text: rootTumbler.title
+            color: Style.displayTextAltColor
+            font.pixelSize: 20
+            font.bold: true
+            anchors{
+                horizontalCenter: tumblerContainer.horizontalCenter
+                bottom: tumblerContainer.top
+                bottomMargin: 8
             }
+        }
+
+        Rectangle {
+            id: tumblerContainer
+
+            implicitWidth: rootTumbler.width
+            implicitHeight: rootTumbler.height
+
+            radius: 20
+            border.width: 5
+            border.color: Style.baseColor
+            color: Style.darkBkgColor
+            clip: true
 
             Rectangle {
-                id: tumblerContainer
+                implicitWidth: tumblerContainer.width-tumblerContainer.border.width*2
+                implicitHeight: (tumblerContainer.height-tumblerContainer.border.width*2)/3
+                anchors.centerIn: tumblerContainer
+                color: Style.barIconColor
+            }
 
-                implicitWidth: rootTumbler.width
-                implicitHeight: rootTumbler.height
+            Tumbler {
+                id: customTumbler
+                anchors.centerIn: tumblerContainer
 
-                radius: 20
-                border.width: 5
-                border.color: Style.baseColor
-                color: Style.darkBkgColor
-                clip: true
+                implicitWidth: tumblerContainer.width
+                implicitHeight: tumblerContainer.height-tumblerContainer.border.width*2
 
-                Rectangle {
-                    implicitWidth: tumblerContainer.width-tumblerContainer.border.width*2
-                    implicitHeight: (tumblerContainer.height-tumblerContainer.border.width*2)/3
-                    anchors.centerIn: tumblerContainer
-                    color: Style.barIconColor
+                //Background+borders dictates the implicit size !!!
+                visibleItemCount : 3
+                model: rootTumbler.model
+
+                delegate: Text {
+                    required property int index
+                    required property string modelData
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: modelData
+                    color: Style.displayTextAltColor
+                    font.pixelSize: Math.max(0.7, 1 - Math.abs(Tumbler.displacement))*28
+                    font.bold: true
                 }
+            }
+        }
 
-                Tumbler {
-                    id: customTumbler
-                    anchors.centerIn: tumblerContainer
+        MultiEffect {
+            id: iconGlow
+            source:  buttonContainer
+            anchors.fill: buttonContainer
+            brightness: 0.1
+            blurEnabled: rootTumbler.selected ? Style.enableEffects : false
+            blurMax: Style.embossBlurMax
+            blur: 1
+            opacity: 1
+            visible: rootTumbler.selected
+        }
 
-                    implicitWidth: tumblerContainer.width
-                    implicitHeight: tumblerContainer.height-tumblerContainer.border.width*2
+        Rectangle {
+            id: buttonContainer
 
-                    //Background+borders dictates the implicit size !!!
-                    visibleItemCount : 3
-                    model: rootTumbler.model
+            property int offset: 8
 
-                    delegate: Text {
-                        required property int index
-                        required property string modelData
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        text: modelData
-                        color: Style.displayTextAltColor
-                        font.pixelSize: Math.max(0.7, 1 - Math.abs(Tumbler.displacement))*28
-                        font.bold: true
-                    }
+            implicitWidth: rootTumbler.width
+            implicitHeight: 60
+            radius: 30
+            //color: rootTumbler.selected ? Style.highlightColor : Style.darkBkgColor
+            color: rootTumbler.selected ? Style.highlightColor : Style.darkBkgColor
+
+            anchors {
+                top: tumblerContainer.bottom
+                topMargin: 40
+                horizontalCenter: tumblerContainer.horizontalCenter
+            }
+
+            visible: !rootTumbler.selected
+        }
+
+        Rectangle {
+            id: innerButton
+
+            implicitWidth: buttonContainer.width-buttonContainer.offset
+            implicitHeight: buttonContainer.height-buttonContainer.offset
+            radius: buttonContainer.radius+buttonContainer.offset
+            color: Style.baseColor
+            anchors.centerIn: buttonContainer
+            // border.width: buttonContainer.offset
+            // border.color: rootTumbler.selected ? Style.highlightColor : Style.darkBkgColor
+
+            gradient: Gradient {
+                GradientStop { position: 0.1; color: Qt.tint(innerButton.color, Qt.hsla(220/255,30/255,1,0.2)) }
+                GradientStop { position: 1.0; color: Qt.tint(innerButton.color, Qt.hsla(0,0,0,0.1)) }
+            }
+
+            Text {
+                id: buttonId
+                text: rootTumbler.buttonText
+                color: selected ? Style.highlightColor : Style.displayTextAltColor
+                anchors.centerIn: innerButton
+                horizontalAlignment: Qt.AlignHCenter
+                font.pixelSize: 16
+                font.bold: true
+            }
+
+            MouseArea {
+                anchors.fill: innerButton
+                onClicked: {
+                    rootTumbler.selected = !rootTumbler.selected
                 }
             }
         }
@@ -191,30 +261,34 @@ Item {
 
         anchors {
             top: parent.top
-            topMargin: 70
+            topMargin: 100
             left: parent.left
             leftMargin: 25
         }
 
-        CustomTumbler {
-            id: headTempTumbler
+        CustomTumblerGroup {
+            id: headTemp
             title: "HEAD TEMP."
             model:["170°", "220°", "240°","255°"]
+            buttonText: "HEAT HEAD"
         }
 
-        CustomTumbler {
-            id: bedTempTumbler
+        CustomTumblerGroup {
+            id: bedTemp
             title: "BED TEMP."
             model:["60°","75°", "80°", "90°"]
+            buttonText: "HEAT BED"
         }
 
-        CustomTumbler {
-            id: materialTempTumbler
+        CustomTumblerGroup {
+            id: materialTemp
             title: "MATERIAL"
             model:["PLA","ABS", "PETG", "NYL", "FLEX"]
+            buttonText: "REMOVE\nFILAMENT"
         }
     }
 
+    // Big slider labels
     Text {
         text: "PRINT SPEED"
         color: Style.displayTextAltColor
@@ -246,7 +320,7 @@ Item {
         id: sliderContainer
 
         width:480
-        height:48
+        height:44
 
         anchors {
             bottom: settingsPage.bottom
@@ -264,12 +338,12 @@ Item {
         Slider {
             id: printSpeedSlider
             width: 450
-            height:16
+            height: sliderContainer.height/3
 
             from: 0
             to: 100
 
-            anchors.centerIn: parent
+            anchors.centerIn: sliderContainer
 
             background: Rectangle {
                 anchors.left: parent.left
@@ -286,11 +360,10 @@ Item {
             handle: Rectangle{
                 id: printerSpeedSliderHandle
 
-                // x: printSpeedSlider.visualPosition * (printSpeedSlider.availableWidth - width)
                 x: printSpeedSlider.visualPosition * (printSpeedSlider.width - width)
                 y: printSpeedSlider.topPadding + printSpeedSlider.availableHeight/2 - height/2
 
-                implicitHeight: parent.height*2.3
+                implicitHeight: sliderContainer.height-2*sliderContainer.border.width
                 implicitWidth: implicitHeight
 
                 radius: width/2
@@ -335,145 +408,3 @@ Item {
     }
 
 }
-
-// component CustomTumbler: Rectangle {
-//     id: rootCustomTumbler
-
-//     property variant model: []
-
-//     implicitWidth: 150
-//     implicitHeight: 150
-//     radius: 20
-//     border.width: 5
-//     color: Style.darkBkgColor
-//     border.color: Style.baseColor
-
-//     Tumbler {
-//         id: rootTumbler
-//         anchors.fill: rootCustomTumbler
-
-//         contentItem: ListView {
-//             model: rootCustomTumbler.model
-//             required property string index
-//             anchors.margins: 5
-
-//             delegate: Rectangle {
-//                 width: rootCustomTumbler.width-rootCustomTumbler.border*2
-//                 height: 50
-//                 color: "red"
-//             }
-
-//             clip: true
-//             snapMode: ListView.SnapToItem
-//             spacing: 1
-
-
-//         }
-//         containmentMask: rootCustomTumbler
-
-//     }
-// }
-
-
-
-
-// RowLayout {
-//     id: thumblersRow
-//     spacing: 30
-
-//     anchors {
-//         top: parent.top
-//         topMargin: parent.height*0.2
-//         left: parent.left
-//         leftMargin: 25
-//     }
-
-//     // Rectangle {
-//     //     width: 150
-//     //     height: 150
-//     //     radius: 20
-//     //     border.width: 5
-//     //     color: Style.darkBkgColor
-//     //     border.color: Style.baseColor
-//     // }
-
-//     // Rectangle {
-//     //     width: 150
-//     //     height: 150
-//     //     radius: 20
-//     //     border.width: 5
-//     //     color: Style.darkBkgColor
-//     //     border.color: Style.baseColor
-//     // }
-
-//     // Rectangle {
-//     //     width: 150
-//     //     height: 150
-//     //     radius: 20
-//     //     border.width: 5
-//     //     color: Style.darkBkgColor
-//     //     border.color: Style.baseColor
-//     // }
-
-//     // Text {
-//     //     text: rootCustomTumbler.title
-//     //     color: Style.displayTextAltColor
-//     //     font.pixelSize: 20
-//     //     font.bold: true
-//     //     Layout.alignment: Qt.AlignHCenter
-//     // }
-
-//     // CustomTumbler {
-//     //     id: headTempTumbler
-//     //     //title: "HEAD TEMP."
-//     //     model:["170", "220", "240","255"]
-//     // }
-
-//     // CustomTumbler {
-//     //     id: bedTempTumbler
-//     //     //title: "BED TEMP."
-//     //     model:["60°","75°", "80°", "90°"]
-//     // }
-
-//     // CustomTumbler {
-//     //     id: materialTempTumbler
-//     //     //title: "MATERIAL"
-//     //     model:["PLA","ABS", "PETG", "NYL", "FLEX"]
-//     // }
-
-//     Tumbler {
-//         id: headTempTumbler
-//         background: ThumblerBackground { id: headTempTumblerBkg}
-//         contentItem: ListView {
-//             anchors.fill: headTempTumblerBkg
-//             model:["170", "220", "240","255"]
-
-//             delegate: ThumblerDelegate {}
-
-//             clip: true
-//             snapMode: ListView.SnapToItem
-//             boundsBehavior: Flickable.StopAtBounds
-//             // spacing: 1
-//             }
-//     }
-
-//     Tumbler {
-//         id: bedTempTumbler
-//         width: 150
-//         height: 150
-//         visibleItemCount : 3
-//         model:["60°","75°", "80°", "90°"]
-//         background: ThumblerBackground { id: bedTempTumblerBkg}
-//         delegate: ThumblerDelegate {
-//             implicitWidth : bedTempTumblerBkg.width-bedTempTumblerBkg.border*2-20
-//             implicitHeight: bedTempTumblerBkg.height/3-bedTempTumblerBkg.border*2
-//         }
-//     }
-
-//     Tumbler {
-//         id: materialTempTumbler
-//         visibleItemCount : 3
-//         model:["PLA","ABS", "PETG", "NYL", "FLEX"]
-//         background: ThumblerBackground { id: materialTempTumblerBkg}
-//     }
-// }

@@ -22,7 +22,9 @@ Window {
 
 
     // Selector type for the left bar
-    component BarSelector: Item{
+    component BarSelector: Item {
+        id: barSelector
+
         property alias barWidth: selectorBarHighlight.width
         property alias text: selectorText.text
         property alias iconItem: selectorIcon.data
@@ -34,8 +36,8 @@ Window {
 
         Rectangle{
             id: selectorHightlight
-            width: parent.width - selectorBarHighlight.width
-            height: parent.height
+            width: barSelector.width - selectorBarHighlight.width
+            height: barSelector.height
             color: Qt.tint(leftBar.color, Qt.rgba(0.4,0.4,1,0.1));
             opacity: 0.7
             visible: active
@@ -44,7 +46,7 @@ Window {
         Rectangle{
             id: selectorBarHighlight
             x: selectorHightlight.width
-            height: parent.height
+            height: barSelector.height
             visible: active
             color: Style.highlightColor
         }
@@ -54,7 +56,7 @@ Window {
             source:  iconColumn
             anchors.fill: iconColumn
             brightness: 0.5
-            blurEnabled: Style.enableEffects
+            blurEnabled: active ? Style.enableEffects : false
             blurMax: Style.embossBlurMax
             blur: 1
             opacity: 0.8
@@ -82,10 +84,17 @@ Window {
             }
         }
 
+        MouseArea {
+            anchors.fill: barSelector
+            onClicked: {
+                barSelector.pressed()
+            }
+        }
+
         TapHandler {
             id: tapHandler
             onTapped: {
-                parent.pressed();
+                barSelector.pressed();
             }
         }
     }

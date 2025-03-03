@@ -11,8 +11,8 @@ Item{
         id: specialButtonRoot
         property int size
 
-        property color colorTint
-        property color contourColor
+        property color colorTint: Style.baseColor
+        property color contourColor: Style.buttonOffColor
 
         property alias shadowVisible: buttonDropShadow.visible
         property alias embossVisible: buttonEmboss.visible
@@ -26,6 +26,7 @@ Item{
 
         width: size
         height: size
+        shadowColor: Style.shadowColor
 
         MultiEffect {
             id: buttonEmboss
@@ -248,9 +249,7 @@ Item{
         anchors.bottom: parent.bottom
         anchors.rightMargin: 60
         anchors.bottomMargin: 45
-        colorTint: Style.baseColor
-        contourColor: Style.buttonOffColor
-        shadowColor: Style.shadowColor
+
 
         onSwitchPressed: {
             stopIcon.visible = !stopIcon.visible;
@@ -305,10 +304,6 @@ Item{
         anchors.bottom: parent.bottom
         anchors.rightMargin: 220
         anchors.bottomMargin: 45
-        colorTint: Style.baseColor
-        contourColor: Style.buttonOffColor
-        shadowColor: Style.shadowColor
-
 
         property bool buttonPressed: false
 
@@ -331,14 +326,15 @@ Item{
         }
 
         onSwitchPressed: {
-                            buttonPressed = !buttonPressed
-                            contourColor = Qt.binding(function() { return Style.highlightColor })
+            buttonPressed = !buttonPressed
+            contourColor = Qt.binding(function() { return Style.highlightColor })
         }
+
         onSwitchReleased:{
-                            if (buttonPressed)
-                                contourColor = Qt.binding(function() { return "#51A6B0" })
-                            else
-                                contourColor = Qt.binding(function() { return Style.buttonOffColor })
+            if (buttonPressed)
+                contourColor = Qt.binding(function() { return "#51A6B0" })
+            else
+                contourColor = Qt.binding(function() { return Style.buttonOffColor })
         }
     }
 

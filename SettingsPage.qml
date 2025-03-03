@@ -3,6 +3,8 @@ import QtQuick.Controls.Basic
 import QtQuick.Layouts
 import QtQuick.Effects
 
+pragma ComponentBehavior: Bound
+
 Item {
     id: settingsPage
     anchors.fill: parent
@@ -59,8 +61,8 @@ Item {
             // Switch Handle
             Rectangle {
                 id: switchHandle
-                width: 30
-                height: width
+                implicitWidth: 30
+                implicitHeight: width
                 radius: width/2
 
                 anchors.top: switchBackground.top
@@ -85,46 +87,68 @@ Item {
         }
     }
 
-    component CustomThumbler: Item {
-        id: rootThumbler
+    component CustomTumbler: Tumbler {
+        id: rootCustomTumbler
 
-        property int thumblerWidth: 10
-        property int thumblerHeight: 10
-
-        MultiEffect {
-            id: rootThumblerEmboss
-            source:  rootBackground
-            anchors.fill: rootBackground
-            blurEnabled: Style.enableEffects
-            blur: 1
-            blurMax: Style.embossBlurMax
-            blurMultiplier: Style.embossBlurMultiplier
-            brightness: blurEnabled ? Style.embossBrightness : 0
-        }
-
-        MultiEffect {
-            id: rootThumblerDropShadow
-            source: rootBackground
-            anchors.fill: rootBackground
-            shadowEnabled: Style.enableEffects
-            shadowColor: Style.shadowColor
-            shadowScale: 1
-            shadowVerticalOffset: Style.shadowOffset
-        }
-
-        Rectangle {
-            id: rootBackground
-            width: rootThumbler.thumblerWidth
-            height: rootThumbler.thumblerHeight
+        background: Rectangle {
+            id: bkgRect
+            implicitWidth: 150
+            implicitHeight: 150
             radius: 20
             border.width: 5
             color: Style.darkBkgColor
             border.color: Style.baseColor
+            clip: true
+        }
+
+        contentItem: ListView {
+            id: listView
+            model: rootCustomTumbler.model
+
+            //delegate:
+
+            clip: true
+            snapMode: ListView.SnapToItem
+            boundsBehavior: Flickable.StopAtBounds
+            // spacing: 1
         }
     }
 
-    RowLayout {
-        spacing: 180
+    component ThumblerBackground: Rectangle {
+        implicitWidth: 150
+        implicitHeight: 150
+        radius: 20
+        border.width: 5
+        color: Style.darkBkgColor
+        border.color: Style.baseColor
+    }
+
+    component ThumblerDelegate: Rectangle {
+        id: thumblerDelegate
+
+        required property int index
+        required property string modelData
+
+        implicitWidth: 150
+        implicitHeight: 40
+        border.width: 5
+        border.color: "black"
+        color: "transparent"
+        clip: true
+
+        Text {
+            anchors.fill: thumblerDelegate
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: thumblerDelegate. modelData
+            color: Style.displayTextAltColor
+            font.pixelSize: 16
+            font.bold: true
+        }
+    }
+
+    Rectangle {
+        id: thumblerBkg
 
         anchors {
             top: parent.top
@@ -133,27 +157,44 @@ Item {
             leftMargin: 25
         }
 
-        CustomThumbler {
-            id: thumblerA
-            thumblerWidth: 150
-            thumblerHeight: 150
+        implicitWidth: 150
+        implicitHeight: 150
+        radius: 20
+        border.width: 5
+        border.color: Style.baseColor
+        color: Style.darkBkgColor
+        clip: true
+
+        Rectangle {
+            width: thumblerBkg.implicitWidth-thumblerBkg.border.width*2
+            height: (thumblerBkg.height-thumblerBkg.border.width*2)/3
+            anchors.centerIn: thumblerBkg
+            color: Style.baseColorLight
         }
 
-        CustomThumbler {
-            id: thumblerB
-            thumblerWidth: 150
-            thumblerHeight: 150
-        }
+        Tumbler {
+            id: bedTempTumbler
+            anchors.centerIn: thumblerBkg
 
-        CustomThumbler {
-            id: thumblerC
-            thumblerWidth: 150
-            thumblerHeight: 150
-        }
+            implicitWidth: thumblerBkg.width
+            implicitHeight: thumblerBkg.height-thumblerBkg.border.width*2
 
+            //Background+borders dictates the implicit size !!!
+            visibleItemCount : 3
+            model:["60°","75°", "80°", "90°"]
+
+            delegate: Text {
+                required property int index
+                required property string modelData
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: modelData
+                color: Style.displayTextAltColor
+                font.pixelSize: Math.max(0.7, 1 - Math.abs(Tumbler.displacement))*28
+                font.bold: true
+            }
+        }
     }
-
-
 
     // Check Rectangle
     Rectangle{
@@ -257,3 +298,164 @@ Item {
     }
 
 }
+
+// component CustomTumbler: Rectangle {
+//     id: rootCustomTumbler
+
+//     property variant model: []
+
+//     implicitWidth: 150
+//     implicitHeight: 150
+//     radius: 20
+//     border.width: 5
+//     color: Style.darkBkgColor
+//     border.color: Style.baseColor
+
+//     Tumbler {
+//         id: rootTumbler
+//         anchors.fill: rootCustomTumbler
+
+//         contentItem: ListView {
+//             model: rootCustomTumbler.model
+//             required property string index
+//             anchors.margins: 5
+
+//             delegate: Rectangle {
+//                 width: rootCustomTumbler.width-rootCustomTumbler.border*2
+//                 height: 50
+//                 color: "red"
+//             }
+
+//             clip: true
+//             snapMode: ListView.SnapToItem
+//             spacing: 1
+
+
+//         }
+//         containmentMask: rootCustomTumbler
+
+//     }
+// }
+
+// MultiEffect {
+//     id: rootThumblerEmboss
+//     source:  thumblersRow
+//     anchors.fill: thumblersRow
+//     blurEnabled: Style.enableEffects
+//     blur: 1
+//     blurMax: Style.embossBlurMax
+//     blurMultiplier: Style.embossBlurMultiplier
+//     brightness: blurEnabled ? Style.embossBrightness : 0
+// }
+
+// MultiEffect {
+//     id: rootThumblerDropShadow
+//     source: thumblersRow
+//     anchors.fill: thumblersRow
+//     shadowEnabled: Style.enableEffects
+//     shadowColor: Style.shadowColor
+//     shadowScale: 1
+//     shadowVerticalOffset: Style.shadowOffset
+// }
+
+
+// RowLayout {
+//     id: thumblersRow
+//     spacing: 30
+
+//     anchors {
+//         top: parent.top
+//         topMargin: parent.height*0.2
+//         left: parent.left
+//         leftMargin: 25
+//     }
+
+//     // Rectangle {
+//     //     width: 150
+//     //     height: 150
+//     //     radius: 20
+//     //     border.width: 5
+//     //     color: Style.darkBkgColor
+//     //     border.color: Style.baseColor
+//     // }
+
+//     // Rectangle {
+//     //     width: 150
+//     //     height: 150
+//     //     radius: 20
+//     //     border.width: 5
+//     //     color: Style.darkBkgColor
+//     //     border.color: Style.baseColor
+//     // }
+
+//     // Rectangle {
+//     //     width: 150
+//     //     height: 150
+//     //     radius: 20
+//     //     border.width: 5
+//     //     color: Style.darkBkgColor
+//     //     border.color: Style.baseColor
+//     // }
+
+//     // Text {
+//     //     text: rootCustomTumbler.title
+//     //     color: Style.displayTextAltColor
+//     //     font.pixelSize: 20
+//     //     font.bold: true
+//     //     Layout.alignment: Qt.AlignHCenter
+//     // }
+
+//     // CustomTumbler {
+//     //     id: headTempTumbler
+//     //     //title: "HEAD TEMP."
+//     //     model:["170", "220", "240","255"]
+//     // }
+
+//     // CustomTumbler {
+//     //     id: bedTempTumbler
+//     //     //title: "BED TEMP."
+//     //     model:["60°","75°", "80°", "90°"]
+//     // }
+
+//     // CustomTumbler {
+//     //     id: materialTempTumbler
+//     //     //title: "MATERIAL"
+//     //     model:["PLA","ABS", "PETG", "NYL", "FLEX"]
+//     // }
+
+//     Tumbler {
+//         id: headTempTumbler
+//         background: ThumblerBackground { id: headTempTumblerBkg}
+//         contentItem: ListView {
+//             anchors.fill: headTempTumblerBkg
+//             model:["170", "220", "240","255"]
+
+//             delegate: ThumblerDelegate {}
+
+//             clip: true
+//             snapMode: ListView.SnapToItem
+//             boundsBehavior: Flickable.StopAtBounds
+//             // spacing: 1
+//             }
+//     }
+
+//     Tumbler {
+//         id: bedTempTumbler
+//         width: 150
+//         height: 150
+//         visibleItemCount : 3
+//         model:["60°","75°", "80°", "90°"]
+//         background: ThumblerBackground { id: bedTempTumblerBkg}
+//         delegate: ThumblerDelegate {
+//             implicitWidth : bedTempTumblerBkg.width-bedTempTumblerBkg.border*2-20
+//             implicitHeight: bedTempTumblerBkg.height/3-bedTempTumblerBkg.border*2
+//         }
+//     }
+
+//     Tumbler {
+//         id: materialTempTumbler
+//         visibleItemCount : 3
+//         model:["PLA","ABS", "PETG", "NYL", "FLEX"]
+//         background: ThumblerBackground { id: materialTempTumblerBkg}
+//     }
+// }

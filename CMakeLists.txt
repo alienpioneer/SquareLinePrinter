@@ -26,7 +26,9 @@ qt_add_qml_module(appSquareLinePrinter
         PrinterPage.qml
         MovePage.qml
         SettingsPage.qml
-        RESOURCES
+        CustomTumbler.qml
+        CustomRoundButton.qml
+    RESOURCES
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

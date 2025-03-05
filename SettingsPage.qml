@@ -1,8 +1,8 @@
 import QtQuick
-import QtQuick.Controls.Basic
 import QtQuick.Layouts
 import QtQuick.Shapes
 import QtQuick.Effects
+import QtQuick.Controls.Basic
 
 pragma ComponentBehavior: Bound
 
@@ -101,155 +101,49 @@ Item {
     }
 
     component CustomTumblerGroup: Item {
-        id: rootTumbler
+        id: groupRootTumbler
 
         implicitWidth: 150
         implicitHeight: 150
 
-        property string title: ""
-        property variant model: []
-        property string buttonText : ""
-        property bool selected: false
+        property string groupTitle: ""
+        property variant groupModel: []
+        property string groupButtonText : ""
 
-        MultiEffect {
-            id: rootTumblerEmboss
-            source:  tumblerContainer
-            anchors.fill: tumblerContainer
-            blurEnabled: Style.enableEffects
-            blur: 1
-            blurMax: Style.embossBlurMax
-            blurMultiplier: Style.embossBlurMultiplier
-            brightness: blurEnabled ? Style.embossBrightness : 0
+        CustomTumbler {
+            id: rootTumbler
+            title: groupTitle
+            model: groupModel
+
+            effectBlurMax: Style.embossBlurMax
+            effectBlurMultiplier: Style.embossBlurMultiplier
+            effectBlurEnabled: Style.enableEffects
+            effectEmbossBrightness: Style.embossBrightness
+            effectShadowColor: Style.shadowColor
+            effectShadowOffset: Style.shadowOffset
+            textColorHighlight: Style.displayTextAltColor
+            textColor: Style.displaySeparatorColor
+            titleColor: Style.displayTextAltColor
+            backgroundColor: Style.darkBkgColor
+            borderColor: Style.baseColor
+            highlightBarColor: Style.barSeparatorColor
         }
 
-        MultiEffect {
-            id: rootTumblerDropShadow
-            source: tumblerContainer
-            anchors.fill: tumblerContainer
-            shadowEnabled: Style.enableEffects
-            shadowColor: Style.shadowColor
-            shadowScale: 1
-            shadowVerticalOffset: Style.shadowOffset
-        }
+        CustomRoundButton {
+            id: rootButton
+            buttonText: groupButtonText
 
-        Text {
-            text: rootTumbler.title
-            color: Style.displayTextAltColor
-            font.pixelSize: 20
-            font.bold: true
-            anchors{
-                horizontalCenter: tumblerContainer.horizontalCenter
-                bottom: tumblerContainer.top
-                bottomMargin: 8
-            }
-        }
-
-        Rectangle {
-            id: tumblerContainer
-
-            implicitWidth: rootTumbler.width
-            implicitHeight: rootTumbler.height
-
-            radius: 20
-            border.width: 5
-            border.color: Style.baseColor
-            color: Style.darkBkgColor
-            clip: true
-
-            Rectangle {
-                implicitWidth: tumblerContainer.width-tumblerContainer.border.width*2
-                implicitHeight: (tumblerContainer.height-tumblerContainer.border.width*2)/3
-                anchors.centerIn: tumblerContainer
-                color: Style.barIconColor
-            }
-
-            Tumbler {
-                id: customTumbler
-                anchors.centerIn: tumblerContainer
-
-                implicitWidth: tumblerContainer.width
-                implicitHeight: tumblerContainer.height-tumblerContainer.border.width*2
-
-                //Background+borders dictates the implicit size !!!
-                visibleItemCount : 3
-                model: rootTumbler.model
-
-                delegate: Text {
-                    required property int index
-                    required property string modelData
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    text: modelData
-                    color: Style.displayTextAltColor
-                    font.pixelSize: Math.max(0.7, 1 - Math.abs(Tumbler.displacement))*28
-                    font.bold: true
-                }
-            }
-        }
-
-        MultiEffect {
-            id: iconGlow
-            source:  buttonContainer
-            anchors.fill: buttonContainer
-            brightness: 0.1
-            blurEnabled: rootTumbler.selected ? Style.enableEffects : false
-            blurMax: Style.embossBlurMax
-            blur: 1
-            opacity: 1
-            visible: rootTumbler.selected
-        }
-
-        Rectangle {
-            id: buttonContainer
-
-            property int offset: 8
-
-            implicitWidth: rootTumbler.width
-            implicitHeight: 60
-            radius: 30
-            //color: rootTumbler.selected ? Style.highlightColor : Style.darkBkgColor
-            color: rootTumbler.selected ? Style.highlightColor : Style.darkBkgColor
+            buttonColorBase :  Style.baseColor
+            borderColorBase : Style.darkBkgColor
+            textColorBase: Style.displayTextAltColor
+            baseColorHighlight : Style.highlightColor
+            effectBlurMax: Style.embossBlurMax
+            effectBlurEnabled: Style.enableEffects
 
             anchors {
-                top: tumblerContainer.bottom
+                top: rootTumbler.bottom
                 topMargin: 40
-                horizontalCenter: tumblerContainer.horizontalCenter
-            }
-
-            visible: !rootTumbler.selected
-        }
-
-        Rectangle {
-            id: innerButton
-
-            implicitWidth: buttonContainer.width-buttonContainer.offset
-            implicitHeight: buttonContainer.height-buttonContainer.offset
-            radius: buttonContainer.radius+buttonContainer.offset
-            color: Style.baseColor
-            anchors.centerIn: buttonContainer
-            // border.width: buttonContainer.offset
-            // border.color: rootTumbler.selected ? Style.highlightColor : Style.darkBkgColor
-
-            gradient: Gradient {
-                GradientStop { position: 0.1; color: Qt.tint(innerButton.color, Qt.hsla(220/255,30/255,1,0.2)) }
-                GradientStop { position: 1.0; color: Qt.tint(innerButton.color, Qt.hsla(0,0,0,0.1)) }
-            }
-
-            Text {
-                id: buttonId
-                text: rootTumbler.buttonText
-                color: selected ? Style.highlightColor : Style.displayTextAltColor
-                anchors.centerIn: innerButton
-                horizontalAlignment: Qt.AlignHCenter
-                font.pixelSize: 16
-                font.bold: true
-            }
-
-            MouseArea {
-                anchors.fill: innerButton
-                onClicked: {
-                    rootTumbler.selected = !rootTumbler.selected
-                }
+                horizontalCenter: rootTumbler.horizontalCenter
             }
         }
     }
@@ -268,23 +162,23 @@ Item {
 
         CustomTumblerGroup {
             id: headTemp
-            title: "HEAD TEMP."
-            model:["170°", "220°", "240°","255°"]
-            buttonText: "HEAT HEAD"
+            groupTitle: "HEAD TEMP."
+            groupModel: ["240°", "255°", "220°", "170°"]
+            groupButtonText: "HEAT HEAD"
         }
 
         CustomTumblerGroup {
             id: bedTemp
-            title: "BED TEMP."
-            model:["60°","75°", "80°", "90°"]
-            buttonText: "HEAT BED"
+            groupTitle: "BED TEMP."
+            groupModel: ["60°","75°", "80°", "90°"]
+            groupButtonText: "HEAT BED"
         }
 
         CustomTumblerGroup {
             id: materialTemp
-            title: "MATERIAL"
-            model:["PLA","ABS", "PETG", "NYL", "FLEX"]
-            buttonText: "REMOVE\nFILAMENT"
+            groupTitle: "MATERIAL"
+            groupModel: ["PLA", "ABS", "PETG", "NYL", "FLEX"]
+            groupButtonText: "REMOVE\nFILAMENT"
         }
     }
 
@@ -319,8 +213,8 @@ Item {
     Rectangle{
         id: sliderContainer
 
-        width:480
-        height:44
+        width: 480
+        height: 44
 
         anchors {
             bottom: settingsPage.bottom
@@ -330,10 +224,10 @@ Item {
         }
 
         border.width: 5
-        radius:24
+        radius: 24
 
         border.color: Style.darkBkgColor
-        color: "#2A3342"
+        color: Style.sliderBkgColor
 
         Slider {
             id: printSpeedSlider
@@ -342,6 +236,7 @@ Item {
 
             from: 0
             to: 100
+            value: 70
 
             anchors.centerIn: sliderContainer
 

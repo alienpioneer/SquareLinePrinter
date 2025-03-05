@@ -25,8 +25,8 @@ Window {
     component BarSelector: Item {
         id: barSelector
 
-        property alias barWidth: selectorBarHighlight.width
-        property alias text: selectorText.text
+        required property int barWidth
+        required property string text
         property alias iconItem: selectorIcon.data
 
         property bool active: false
@@ -36,8 +36,8 @@ Window {
 
         Rectangle{
             id: selectorHightlight
-            width: barSelector.width - selectorBarHighlight.width
-            height: barSelector.height
+            implicitWidth: barSelector.width - selectorBarHighlight.width
+            implicitHeight: barSelector.height
             color: Qt.tint(leftBar.color, Qt.rgba(0.4,0.4,1,0.1));
             opacity: 0.7
             visible: active
@@ -45,16 +45,18 @@ Window {
 
         Rectangle{
             id: selectorBarHighlight
-            x: selectorHightlight.width
-            height: barSelector.height
+            anchors.left: selectorHightlight.right
+            implicitHeight: barSelector.height
+            implicitWidth: barSelector.barWidth
+
             visible: active
             color: Style.highlightColor
         }
 
         MultiEffect {
             id: iconGlow
-            source:  iconColumn
-            anchors.fill: iconColumn
+            source:  selectorIcon
+            anchors.fill: selectorIcon
             brightness: 0.5
             blurEnabled: active ? Style.enableEffects : false
             blurMax: Style.embossBlurMax
@@ -63,38 +65,58 @@ Window {
             visible: active
         }
 
-        ColumnLayout {
-            id: iconColumn
-            anchors.centerIn: selectorHightlight
-            spacing: 8
+        MultiEffect {
+            id: textGlow
+            source:  selectorText
+            anchors.fill: selectorText
+            brightness: 0.5
+            blurEnabled: active ? Style.enableEffects : false
+            blurMax: Style.embossBlurMax
+            blur: 1
+            opacity: 0.8
+            visible: active
+        }
 
-            Item{
-                id:selectorIcon
-                width: selectorHightlight.width/2
-                height: selectorHightlight.width/2
-                Layout.alignment: Qt.AlignCenter
+        Item{
+            id:selectorIcon
+
+            implicitWidth: selectorHightlight.width/2
+            implicitHeight: selectorHightlight.width/2
+
+            anchors.centerIn: barSelector
+
+            // Rectangle {
+            //     width: parent.width
+            //     height: parent.height
+            //     color: "transparent"
+            //     border.width: 1
+            //     border.color: "red"
+            // }
+        }
+
+        Text{
+            id: selectorText
+
+            text: barSelector.text
+
+            anchors {
+                horizontalCenter: barSelector.horizontalCenter
+                top: selectorIcon.bottom
+                topMargin: 8
             }
-            Text{
-                id: selectorText
-                font {
-                    bold: true
-                    pixelSize: Style.textSize
-                }
-                color: active ? Style.highlightColor : Style.barIconColor
+
+            font {
+                bold: true
+                pixelSize: Style.textSize
             }
+
+            color: active ? Style.highlightColor : Style.barIconColor
         }
 
         MouseArea {
             anchors.fill: barSelector
             onClicked: {
                 barSelector.pressed()
-            }
-        }
-
-        TapHandler {
-            id: tapHandler
-            onTapped: {
-                barSelector.pressed();
             }
         }
     }
@@ -153,8 +175,15 @@ Window {
             iconItem: Shape {
                 id: printIcon
                 antialiasing: true
+                asynchronous: true
                 anchors.centerIn: parent
                 visible: true
+
+                // On QT>6.7 use transforms
+                // transform: Translate {
+                //     x: 1.5*printIcon.width
+                //     y: 1.5*printIcon.height
+                // }
 
                 ShapePath {
                     id: startButtonPath
@@ -198,8 +227,15 @@ Window {
             iconItem: Shape {
                 id: moveIcon
                 antialiasing: true
+                asynchronous: true
                 anchors.centerIn: parent
                 visible: true
+
+                // On QT>6.7 use transforms
+                // transform: Translate {
+                //     x: moveIcon.width
+                //     y: moveIcon.height
+                // }
 
                 ShapePath {
                     fillColor: "transparent"
@@ -317,6 +353,7 @@ Window {
             iconItem: Shape {
                 id: settingsIcon
                 antialiasing: true
+                asynchronous: true
                 anchors.centerIn: parent
                 visible: true
 

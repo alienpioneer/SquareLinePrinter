@@ -15,7 +15,7 @@ QtObject {
     readonly property color buttonIconColor: "#B4CBF5"
     readonly property color buttonOffColor: "#161A23"
 
-    readonly property color highlightColor: "#00D2ff"
+    readonly property color highlightColor: "#00CDFF"
     readonly property color highlightColorDarker: "#0f8fcf"
 
     readonly property color darkBkgColor: "#191D26"
@@ -23,6 +23,8 @@ QtObject {
     readonly property color displaySeparatorColor: "#2F343F"
     readonly property color displayTextColor: "#777F8F"
     readonly property color displayTextAltColor: "#C5CFE7"
+
+    readonly property color sliderBkgColor: "#2A3342"
 
     readonly property bool enableEffects: true
 

@@ -5,6 +5,7 @@ import QtQuick.Shapes
 import QtQuick.Layouts
 
 Item{
+    id: printerPage
     anchors.fill: parent
 
     component SpecialButton: Item {
@@ -16,7 +17,6 @@ Item{
 
         property alias shadowVisible: buttonDropShadow.visible
         property alias embossVisible: buttonEmboss.visible
-        property alias shadowColor: buttonDropShadow.shadowColor
         property alias shadowOffset: buttonDropShadow.shadowVerticalOffset
 
         property bool showBorders: false
@@ -26,7 +26,6 @@ Item{
 
         width: size
         height: size
-        shadowColor: Style.shadowColor
 
         MultiEffect {
             id: buttonEmboss
@@ -45,7 +44,7 @@ Item{
             anchors.fill: parent
             shadowEnabled: Style.enableEffects
             shadowVerticalOffset: Style.shadowOffset
-            // shadowScale: 1.02
+            shadowColor: Style.shadowColor
         }
 
         Rectangle{

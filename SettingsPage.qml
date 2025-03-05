@@ -112,8 +112,8 @@ Item {
 
         CustomTumbler {
             id: rootTumbler
-            title: groupTitle
-            model: groupModel
+            title:  groupRootTumbler.groupTitle
+            model:  groupRootTumbler.groupModel
 
             effectBlurMax: Style.embossBlurMax
             effectBlurMultiplier: Style.embossBlurMultiplier
@@ -121,6 +121,7 @@ Item {
             effectEmbossBrightness: Style.embossBrightness
             effectShadowColor: Style.shadowColor
             effectShadowOffset: Style.shadowOffset
+
             textColorHighlight: Style.displayTextAltColor
             textColor: Style.displaySeparatorColor
             titleColor: Style.displayTextAltColor
@@ -131,7 +132,7 @@ Item {
 
         CustomRoundButton {
             id: rootButton
-            buttonText: groupButtonText
+            buttonText:  groupRootTumbler.groupButtonText
 
             buttonColorBase :  Style.baseColor
             borderColorBase : Style.darkBkgColor

@@ -11,12 +11,13 @@ Item {
     property string title: ""
     property variant model: []
 
+    property bool effectBlurEnabled
     property int effectBlurMax
-    property int effectBlurMultiplier
-    property int effectBlurEnabled
-    property color effectEmbossBrightness
+    property double effectBlurMultiplier
+
+    property double effectEmbossBrightness
     property color effectShadowColor
-    property color effectShadowOffset
+    property int effectShadowOffset
 
     property color textColorHighlight
     property color textColor
@@ -29,12 +30,12 @@ Item {
     MultiEffect {
         id: rootTumblerEmboss
         source:  tumblerContainer
-        anchors.fill: tumblerContainer
+        anchors.fill: rootTumbler
         blurEnabled: rootTumbler.effectBlurEnabled
         blur: 1
         blurMax: rootTumbler.effectBlurMax
         blurMultiplier: rootTumbler.effectBlurMultiplier
-        brightness: blurEnabled ? rootTumbler.effectEmbossBrightness : 0
+        brightness: rootTumblerEmboss.blurEnabled ? rootTumbler.effectEmbossBrightness : 0
     }
 
     MultiEffect {
@@ -56,7 +57,7 @@ Item {
         anchors{
             horizontalCenter: tumblerContainer.horizontalCenter
             bottom: tumblerContainer.top
-            bottomMargin: 8
+            bottomMargin: 10
         }
         visible: rootTumbler.title != ""
     }

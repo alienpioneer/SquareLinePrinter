@@ -16,7 +16,7 @@ Item {
     property color baseColorHighlight
 
     property int effectBlurMax
-    property int effectBlurEnabled
+    property bool effectBlurEnabled
 
     property bool selected: false
     property int buttonBorderOffset: buttonRoot.selected ? 3 : 4

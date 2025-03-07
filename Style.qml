@@ -31,16 +31,17 @@ QtObject {
     readonly property color sliderBkgColor: "#2A3342"
     readonly property color roundButtonsHighlight: "#05bcff"
 
-    readonly property bool enableEffects: true
+    readonly property bool  enableEffects: true
+    readonly property bool  enableBackgroundLight: false
 
     // Drop shadow effects
     readonly property color shadowColor: "#202634"
-    readonly property int shadowOffset: 14
+    readonly property int   shadowOffset: 14
 
     // Glow effects
     readonly property double embossBrightness: 0.6
-    readonly property int embossBlurMax: 22
+    readonly property int    embossBlurMax: 22
     readonly property double embossBlurMultiplier: 1.3
 
-    readonly property int bigButtonsEmbossBlurMax: 42
+    readonly property int    bigButtonsEmbossBlurMax: 42
 }

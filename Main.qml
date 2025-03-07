@@ -121,6 +121,33 @@ Window {
         }
     }
 
+    MultiEffect {
+        id: backgroundBrightness
+        source:  backgroundLightSource
+        anchors.fill: backgroundLightSource
+        blurEnabled: Style.enableBackgroundLight
+        blur: 1
+        blurMax: 120
+        blurMultiplier: 4
+        brightness: Style.enableBackgroundLight ? 0.01 : 0
+        visible: Style.enableBackgroundLight
+    }
+
+    Rectangle {
+        id: backgroundLightSource
+        width: 200
+        height: width
+        radius: width/2
+        visible: false
+
+        anchors {
+            top: parent.top
+            right: parent.right
+            topMargin: 70
+            rightMargin: 220
+        }
+    }
+
     // Main view
     Loader{
         id: mainLoader

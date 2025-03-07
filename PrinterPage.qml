@@ -30,7 +30,7 @@ Item{
         MultiEffect {
             id: buttonEmboss
             source:  buttonOuter
-            anchors.fill: parent
+            anchors.fill: buttonOuter
             blurEnabled: Style.enableEffects
             blur: 1
             blurMax: Style.embossBlurMax
@@ -41,7 +41,7 @@ Item{
         MultiEffect {
             id: buttonDropShadow
             source: buttonOuter
-            anchors.fill: parent
+            anchors.fill: buttonOuter
             shadowEnabled: Style.enableEffects
             shadowVerticalOffset: Style.shadowOffset
             shadowColor: Style.shadowColor
@@ -49,9 +49,9 @@ Item{
 
         Rectangle{
             id: checker
-            width: parent.width
-            height: parent.height
-            anchors.fill: parent
+            width: specialButtonRoot.width
+            height: specialButtonRoot.height
+            anchors.fill: specialButtonRoot
             border.color: "red"
             border.width: 1
             color: "transparent"
@@ -60,15 +60,15 @@ Item{
 
         Rectangle {
             id: buttonOuter
-            width: parent.width
+            width: specialButtonRoot.width
             height: width
-            anchors.centerIn: parent
+            anchors.centerIn: specialButtonRoot
             visible: true
             radius: 30
-            color: colorTint
+            color: specialButtonRoot.colorTint
             gradient: Gradient {
-                GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(0,0,1,0.1)) }
-                GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.2)) }
+                GradientStop { position: 0.1; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(0,0,1,0.1)) }
+                GradientStop { position: 1.0; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(0,0,0,0.2)) }
             }
 
             RoundButton {
@@ -84,7 +84,7 @@ Item{
                     id: buttonContourBkg
                     radius: buttonContour.radius
                     anchors.fill: buttonContour
-                    color: contourColor
+                    color:  specialButtonRoot.contourColor
                 }
             }
 
@@ -95,8 +95,8 @@ Item{
                 anchors.centerIn: buttonContour
                 radius: buttonContour.radius - buttonContour.radius*0.1
                 gradient: Gradient {
-                    GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(220/255,30/255,1,0.4)) }
-                    GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.4)) }
+                    GradientStop { position: 0.1; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(220/255,30/255,1,0.4)) }
+                    GradientStop { position: 1.0; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(0,0,0,0.4)) }
                 }
                 visible: true
             }
@@ -109,8 +109,8 @@ Item{
                 radius: buttonBevel.radius - buttonBevel.radius*0.1
                 // radius: buttonBevel.radius - (buttonBevel.width-width)
                 gradient: Gradient {
-                    GradientStop { position: 0.1; color: Qt.tint(colorTint, Qt.hsla(220/255,30/255,1,0.2)) }
-                    GradientStop { position: 1.0; color: Qt.tint(colorTint, Qt.hsla(0,0,0,0.1)) }
+                    GradientStop { position: 0.1; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(220/255,30/255,1,0.2)) }
+                    GradientStop { position: 1.0; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(0,0,0,0.1)) }
                 }
             }
         }

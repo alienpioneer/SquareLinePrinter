@@ -137,7 +137,7 @@ Item {
             buttonColorBase :  Style.baseColor
             borderColorBase : Style.darkBkgColor
             textColorBase: Style.displayTextAltColor
-            baseColorHighlight : Style.highlightColor
+            baseColorHighlight : Style.roundButtonsHighlight
             effectBlurMax: Style.embossBlurMax
             effectBlurEnabled: Style.enableEffects
 

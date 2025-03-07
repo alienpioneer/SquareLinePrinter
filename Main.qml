@@ -150,7 +150,7 @@ Window {
         color: Style.barColor
         anchors.left: parent.left
 
-        property int currentSelection: 1
+        property int currentSelection: 2
 
         Rectangle {
             id: leftBarSeparator

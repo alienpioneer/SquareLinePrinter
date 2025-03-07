@@ -73,7 +73,7 @@ Item {
         brightness: 0.2
         blurEnabled: buttonRoot.selected ? buttonRoot.effectBlurEnabled : false
         blurMax: buttonRoot.effectBlurMax
-        blur: 1.2
+        blur: 1
         opacity: 1
         visible: buttonRoot.selected
     }

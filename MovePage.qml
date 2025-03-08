@@ -1,11 +1,12 @@
 import QtQuick
 import QtQuick.Effects
+import "Components" as Components
 
 Item {
     id: movePage
     anchors.fill: parent
 
-    CustomTumbler {
+    Components.CustomTumbler {
         id: moveTumbler
         title: "STEPS SIZE"
         model: [1,5,10,25,50]
@@ -31,7 +32,7 @@ Item {
         }
     }
 
-    CustomRoundButton {
+    Components.CustomRoundButton {
         id: heatButton
         buttonText: "HEAT"
 
@@ -49,7 +50,7 @@ Item {
         }
     }
 
-    CustomRoundButton {
+    Components.CustomRoundButton {
         id: resetButton
         buttonText: "RESET POS."
 
@@ -67,14 +68,14 @@ Item {
         }
     }
 
-    BigRoundButton {
+    Components.BigRoundButton {
         id: moveButton
 
         anchors{
             right: movePage.right
             bottom: movePage.bottom
             bottomMargin: 40
-            rightMargin: 280
+            rightMargin: 260
         }
 
         text: "MOVE\nXY"
@@ -97,7 +98,7 @@ Item {
         shadowOffset: Style.shadowOffset
     }
 
-    BigRectangularButton {
+    Components.BigRectangularButton {
         id: moveZButton
 
         anchors{
@@ -127,5 +128,53 @@ Item {
 
         shadowColor: Style.shadowColor
         shadowOffset: Style.shadowOffset
+    }
+
+    Components.SpecialDisplay {
+        id: xyDisplay
+
+        width: 280
+        height: 80
+
+        anchors {
+            right: movePage.right
+            top: movePage.top
+            rightMargin: 240
+            topMargin: 75
+        }
+
+        leftUpperText: "X Position"
+        rightUpperText: "Y Position"
+        rightLowerText: "350"
+        leftLowerText: "185"
+
+        backgroundColor: Style.darkBkgColor
+        backgroundBorderColor: Style.borderColor
+        separatorColor: Style.displaySeparatorColor
+        upperTextColor: Style.displayTextColor
+        lowerTextColor: Style.displayTextAltColor
+    }
+
+    Components.SpecialDisplay {
+        id: zDisplay
+
+        width: 120
+        height: 80
+
+        anchors {
+            left: movePage.left
+            top: movePage.top
+            leftMargin: 25
+            topMargin: 75
+        }
+
+        rightUpperText: "Z Position"
+        rightLowerText: "25"
+
+        backgroundColor: Style.darkBkgColor
+        backgroundBorderColor: Style.borderColor
+        separatorColor: Style.displaySeparatorColor
+        upperTextColor: Style.displayTextColor
+        lowerTextColor: Style.displayTextAltColor
     }
 }

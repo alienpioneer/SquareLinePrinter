@@ -9,7 +9,7 @@ Window {
     width: 800
     height: 480
     visible: true
-    title: qsTr("Printer")
+    title: qsTr("SquareLinePrinter")
     color: Style.baseColor
 
     // maximumHeight: height

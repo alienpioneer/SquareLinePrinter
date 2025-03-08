@@ -5,8 +5,8 @@ import QtQuick.Shapes
 Item {
     id: bigRectBtnRoot
 
-    implicitWidth:  100
-    implicitHeight: 260
+    implicitWidth:  90
+    implicitHeight: 250
 
     property int buttonRadius: 20
     property int innerOffset: 20

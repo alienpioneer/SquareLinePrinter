@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Effects
 import QtQuick.Shapes
 import QtQuick.Layouts
+import "Components" as Components
 
 Item{
     id: printerPage
@@ -111,88 +112,6 @@ Item{
                 gradient: Gradient {
                     GradientStop { position: 0.1; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(220/255,30/255,1,0.2)) }
                     GradientStop { position: 1.0; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(0,0,0,0.1)) }
-                }
-            }
-        }
-    }
-
-    component SpecialDisplay: Item {
-        id: specialDisplayRoot
-
-        property alias leftUpperText: leftUpperText.text
-        property alias rightUpperText: rightUpperText.text
-        property alias rightLowerText: rightLowerText.text
-        property alias leftLowerText: leftLowerText.text
-
-        // Indicator used for debug
-        Rectangle{
-            width: parent.width
-            height: parent.height
-            anchors.fill: parent
-            border.color: "red"
-            border.width: 1
-            color: "transparent"
-            visible: false
-        }
-
-        // Background rectangle
-        Rectangle {
-            id: dispayBkg
-            width: specialDisplayRoot.width
-            height: specialDisplayRoot.heigh
-            anchors.fill: specialDisplayRoot
-            radius: 16
-            border.color: Style.borderColor
-            border.width: 3
-            color: Style.darkBkgColor
-
-            Rectangle {
-                anchors.centerIn: dispayBkg
-                width: 2
-                height: specialDisplayRoot.height - specialDisplayRoot.height*0.4
-                color: Style.displaySeparatorColor
-            }
-
-            RowLayout {
-                anchors.centerIn: dispayBkg
-                spacing: 60
-
-                ColumnLayout {
-                    spacing: 2
-
-                    Text {
-                        id: rightUpperText
-                        font.pixelSize: 18
-                        font.bold: true
-                        color: Style.displayTextColor
-                        Layout.alignment: Qt.AlignCenter
-                    }
-
-                    Text {
-                        id: rightLowerText
-                        font.pixelSize: 26
-                        color: Style.displayTextAltColor
-                        Layout.alignment: Qt.AlignCenter
-                    }
-                }
-
-                ColumnLayout {
-                    spacing: 2
-
-                    Text {
-                        id: leftUpperText
-                        font.pixelSize: 18
-                        font.bold: true
-                        color: Style.displayTextColor
-                        Layout.alignment: Qt.AlignCenter
-                    }
-
-                    Text {
-                        id: leftLowerText
-                        font.pixelSize: 26
-                        color: Style.displayTextAltColor
-                        Layout.alignment: Qt.AlignCenter
-                    }
                 }
             }
         }
@@ -337,21 +256,30 @@ Item{
         }
     }
 
-    SpecialDisplay {
+    Components.SpecialDisplay {
         id: topSpecialDisplay
         width: 335
         height: 82
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.rightMargin: 25
-        anchors.topMargin: parent.height*0.170
+        anchors {
+            right: printerPage.right
+            top: printerPage.top
+            rightMargin: 25
+            topMargin: printerPage.height*0.170
+        }
+
         leftUpperText: "Start Time"
         rightUpperText: "Printing Time"
         rightLowerText: "08:25"
         leftLowerText: "10:25"
+
+        backgroundColor: Style.darkBkgColor
+        backgroundBorderColor: Style.borderColor
+        separatorColor: Style.displaySeparatorColor
+        upperTextColor: Style.displayTextColor
+        lowerTextColor: Style.displayTextAltColor
     }
 
-    SpecialDisplay {
+    Components.SpecialDisplay {
         id: bottomSpecialDisplay
         width: 335
         height: 82
@@ -359,5 +287,11 @@ Item{
         anchors.top: topSpecialDisplay.bottom
         anchors.rightMargin: 25
         anchors.topMargin: 20
+
+        backgroundColor: Style.darkBkgColor
+        backgroundBorderColor: Style.borderColor
+        separatorColor: Style.displaySeparatorColor
+        upperTextColor: Style.displayTextColor
+        lowerTextColor: Style.displayTextAltColor
     }
 }

@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Controls
 import QtQuick.Effects
 import QtQuick.Shapes
 import QtQuick.Layouts
@@ -8,114 +7,6 @@ import "Components" as Components
 Item{
     id: printerPage
     anchors.fill: parent
-
-    component SpecialButton: Item {
-        id: specialButtonRoot
-        property int size
-
-        property color colorTint: Style.baseColor
-        property color contourColor: Style.buttonOffColor
-
-        property alias shadowVisible: buttonDropShadow.visible
-        property alias embossVisible: buttonEmboss.visible
-        property alias shadowOffset: buttonDropShadow.shadowVerticalOffset
-
-        property bool showBorders: false
-
-        signal switchPressed()
-        signal switchReleased()
-
-        width: size
-        height: size
-
-        MultiEffect {
-            id: buttonEmboss
-            source:  buttonOuter
-            anchors.fill: buttonOuter
-            blurEnabled: Style.enableEffects
-            blur: 1
-            blurMax: Style.embossBlurMax
-            blurMultiplier: Style.embossBlurMultiplier
-            brightness: blurEnabled ? Style.embossBrightness : 0
-        }
-
-        MultiEffect {
-            id: buttonDropShadow
-            source: buttonOuter
-            anchors.fill: buttonOuter
-            shadowEnabled: Style.enableEffects
-            shadowVerticalOffset: Style.shadowOffset
-            shadowColor: Style.shadowColor
-        }
-
-        Rectangle{
-            id: checker
-            width: specialButtonRoot.width
-            height: specialButtonRoot.height
-            anchors.fill: specialButtonRoot
-            border.color: "red"
-            border.width: 1
-            color: "transparent"
-            visible: specialButtonRoot.showBorders
-        }
-
-        Rectangle {
-            id: buttonOuter
-            width: specialButtonRoot.width
-            height: width
-            anchors.centerIn: specialButtonRoot
-            visible: true
-            radius: 30
-            color: specialButtonRoot.colorTint
-            gradient: Gradient {
-                GradientStop { position: 0.1; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(0,0,1,0.1)) }
-                GradientStop { position: 1.0; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(0,0,0,0.2)) }
-            }
-
-            RoundButton {
-                id: buttonContour
-                width: buttonOuter.width*0.91
-                height: buttonOuter.height*0.91
-                radius: buttonOuter.radius-buttonOuter.radius*0.1
-                anchors.centerIn: buttonOuter
-                onPressed : specialButtonRoot.switchPressed()
-                onReleased : specialButtonRoot.switchReleased()
-
-                background: Rectangle {
-                    id: buttonContourBkg
-                    radius: buttonContour.radius
-                    anchors.fill: buttonContour
-                    color:  specialButtonRoot.contourColor
-                }
-            }
-
-            Rectangle {
-                id: buttonBevel
-                width: buttonContour.width*0.92
-                height: buttonContour.height*0.92
-                anchors.centerIn: buttonContour
-                radius: buttonContour.radius - buttonContour.radius*0.1
-                gradient: Gradient {
-                    GradientStop { position: 0.1; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(220/255,30/255,1,0.4)) }
-                    GradientStop { position: 1.0; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(0,0,0,0.4)) }
-                }
-                visible: true
-            }
-
-            Rectangle {
-                id: buttonInner
-                width: buttonBevel.width*0.92
-                height: buttonBevel.height*0.92
-                anchors.centerIn: buttonBevel
-                radius: buttonBevel.radius - buttonBevel.radius*0.1
-                // radius: buttonBevel.radius - (buttonBevel.width-width)
-                gradient: Gradient {
-                    GradientStop { position: 0.1; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(220/255,30/255,1,0.2)) }
-                    GradientStop { position: 1.0; color: Qt.tint( specialButtonRoot.colorTint, Qt.hsla(0,0,0,0.1)) }
-                }
-            }
-        }
-    }
 
     Item {
         id: mainViewItem
@@ -160,14 +51,28 @@ Item{
         }
     }
 
-    SpecialButton{
+    Components.SpecialButton{
         id: stopButton
         size: 120
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.rightMargin: 60
-        anchors.bottomMargin: 45
 
+        anchors {
+            right: parent.right
+            bottom: parent.bottom
+            rightMargin: 60
+            bottomMargin: 45
+        }
+
+        colorTint: Style.baseColor
+        contourColor: Style.buttonOffColor
+        colorBevelHightlight: Style.baseColorLight
+
+        effectsEnabled: Style.enableEffects
+        effectBlurMax: Style.embossBlurMax
+        effectBlurMultiplier: Style.embossBlurMultiplier
+
+        effectEmbossBrightness: Style.embossBrightness
+        effectShadowColor: Style.shadowColor
+        effectShadowOffset: Style.shadowOffset
 
         onSwitchPressed: {
             stopIcon.visible = !stopIcon.visible;
@@ -215,13 +120,28 @@ Item{
         }
     }
 
-    SpecialButton{
+    Components.SpecialButton{
         id: startButton
         size: 120
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.rightMargin: 220
-        anchors.bottomMargin: 45
+
+        anchors {
+            right: parent.right
+            bottom: parent.bottom
+            rightMargin: 220
+            bottomMargin: 45
+        }
+
+        colorTint: Style.baseColor
+        contourColor: Style.buttonOffColor
+        colorBevelHightlight: Style.baseColorLight
+
+        effectsEnabled: Style.enableEffects
+        effectBlurMax: Style.embossBlurMax
+        effectBlurMultiplier: Style.embossBlurMultiplier
+
+        effectEmbossBrightness: Style.embossBrightness
+        effectShadowColor: Style.shadowColor
+        effectShadowOffset: Style.shadowOffset
 
         property bool buttonPressed: false
 

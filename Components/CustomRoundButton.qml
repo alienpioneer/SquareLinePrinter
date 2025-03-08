@@ -19,7 +19,10 @@ Item {
     property bool effectBlurEnabled
 
     property bool selected: false
+    property bool toggle: false
     property int buttonBorderOffset: buttonRoot.selected ? 3 : 4
+
+    signal buttonPressed()
 
     Rectangle {
         id: buttonContour
@@ -60,7 +63,21 @@ Item {
         MouseArea {
             anchors.fill: innerButton
             onClicked: {
-                buttonRoot.selected = !buttonRoot.selected
+                if (!buttonRoot.toggle){
+                    buttonRoot.selected = !buttonRoot.selected
+                    buttonRoot.buttonPressed()
+                }
+            }
+            onPressed: {
+                if (buttonRoot.toggle){
+                    buttonRoot.selected = true
+                    buttonRoot.buttonPressed()
+                }
+            }
+            onReleased: {
+                if (buttonRoot.toggle){
+                    buttonRoot.selected = false
+                }
             }
         }
     }

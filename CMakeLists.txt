@@ -31,6 +31,8 @@ qt_add_qml_module(appSquareLinePrinter
         Components/BigRoundButton.qml
         Components/BigRectangularButton.qml
         Components/SpecialDisplay.qml
+        Components/SpecialButton.qml
+        Components/SpecialSwitch.qml
     RESOURCES
 )
 

@@ -36,6 +36,9 @@ Item {
     property color shadowColor
     property int   shadowOffset
 
+    signal pressedUp()
+    signal pressedDown()
+
     MultiEffect {
         id: bigButtonEmboss
         source:  bigRectButton
@@ -183,6 +186,7 @@ Item {
                     onPressed: {
                         upButtonGlow.glowEnable = bigRectBtnRoot.enableEffects
                         upArrow.selected = true
+                        bigRectBtnRoot.pressedUp()
                     }
                     onReleased: {
                         upButtonGlow.glowEnable = false
@@ -204,6 +208,7 @@ Item {
                     onPressed: {
                         downButtonGlow.glowEnable = bigRectBtnRoot.enableEffects
                         downArrow.selected = true
+                        bigRectBtnRoot.pressedDown()
                     }
                     onReleased: {
                         downButtonGlow.glowEnable = false

@@ -36,6 +36,11 @@ Item {
     property color shadowColor
     property int   shadowOffset
 
+    signal pressedUp()
+    signal pressedDown()
+    signal pressedLeft()
+    signal pressedRight()
+
     MultiEffect {
         id: bigButtonEmboss
         source:  bigRoundButton
@@ -255,6 +260,7 @@ Item {
                     onPressed: {
                         upButtonGlow.glowEnable = bigRoundBtnRoot.enableEffects
                         upArrow.selected = true
+                        pressedUp()
                     }
                     onReleased: {
                         upButtonGlow.glowEnable = false
@@ -276,6 +282,7 @@ Item {
                     onPressed: {
                         downButtonGlow.glowEnable = bigRoundBtnRoot.enableEffects
                         downArrow.selected = true
+                        pressedDown()
                     }
                     onReleased: {
                         downButtonGlow.glowEnable = false
@@ -297,6 +304,7 @@ Item {
                     onPressed: {
                         leftButtonGlow.glowEnable = bigRoundBtnRoot.enableEffects
                         leftArrow.selected = true
+                        pressedLeft()
                     }
                     onReleased: {
                         leftButtonGlow.glowEnable = false
@@ -318,6 +326,7 @@ Item {
                     onPressed: {
                         rightButtonGlow.glowEnable = bigRoundBtnRoot.enableEffects
                         rightArrow.selected = true
+                        pressedRight()
                     }
                     onReleased: {
                         rightButtonGlow.glowEnable = false

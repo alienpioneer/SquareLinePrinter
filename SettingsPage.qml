@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Shapes
 import QtQuick.Effects
 import QtQuick.Controls.Basic
+import "Components" as Components
 
 pragma ComponentBehavior: Bound
 
@@ -110,7 +111,7 @@ Item {
         property variant groupModel: []
         property string groupButtonText : ""
 
-        CustomTumbler {
+        Components.CustomTumbler {
             id: rootTumbler
             title:  groupRootTumbler.groupTitle
             model:  groupRootTumbler.groupModel
@@ -130,7 +131,7 @@ Item {
             highlightBarColor: Style.barSeparatorColor
         }
 
-        CustomRoundButton {
+        Components.CustomRoundButton {
             id: rootButton
             buttonText:  groupRootTumbler.groupButtonText
 

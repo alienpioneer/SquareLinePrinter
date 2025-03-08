@@ -6,6 +6,8 @@ Item {
     id: movePage
     anchors.fill: parent
 
+    property vector3d currentPosition : Qt.vector3d(185,250,25)
+
     Components.CustomTumbler {
         id: moveTumbler
         title: "STEPS SIZE"
@@ -54,6 +56,8 @@ Item {
         id: resetButton
         buttonText: "RESET POS."
 
+        toggle: true
+
         buttonColorBase :  Style.baseColor
         borderColorBase : Style.darkBkgColor
         textColorBase: Style.displayTextAltColor
@@ -65,6 +69,10 @@ Item {
             bottom: movePage.bottom
             bottomMargin: 250
             horizontalCenter: heatButton.horizontalCenter
+        }
+
+        onButtonPressed: {
+            movePage.currentPosition = Qt.vector3d(185,250,25)
         }
     }
 
@@ -96,6 +104,22 @@ Item {
 
         shadowColor: Style.shadowColor
         shadowOffset: Style.shadowOffset
+
+        onPressedUp: {
+            currentPosition.y +=  parseInt(moveTumbler.currentSelection.modelData)
+        }
+
+        onPressedDown: {
+            currentPosition.y -= parseInt(moveTumbler.currentSelection.modelData)
+        }
+
+        onPressedRight: {
+            currentPosition.x +=  parseInt(moveTumbler.currentSelection.modelData)
+        }
+
+        onPressedLeft: {
+            currentPosition.x -=  parseInt(moveTumbler.currentSelection.modelData)
+        }
     }
 
     Components.BigRectangularButton {
@@ -128,6 +152,14 @@ Item {
 
         shadowColor: Style.shadowColor
         shadowOffset: Style.shadowOffset
+
+        onPressedUp: {
+            currentPosition.z +=  parseInt(moveTumbler.currentSelection.modelData)
+        }
+
+        onPressedDown: {
+            currentPosition.z -= parseInt(moveTumbler.currentSelection.modelData)
+        }
     }
 
     Components.SpecialDisplay {
@@ -145,8 +177,8 @@ Item {
 
         leftUpperText: "X Position"
         rightUpperText: "Y Position"
-        rightLowerText: "350"
-        leftLowerText: "185"
+        rightLowerText: `${currentPosition.y}`
+        leftLowerText: `${currentPosition.x}`
 
         backgroundColor: Style.darkBkgColor
         backgroundBorderColor: Style.borderColor
@@ -169,7 +201,7 @@ Item {
         }
 
         rightUpperText: "Z Position"
-        rightLowerText: "25"
+        rightLowerText: `${currentPosition.z}`
 
         backgroundColor: Style.darkBkgColor
         backgroundBorderColor: Style.borderColor

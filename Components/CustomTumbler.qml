@@ -27,6 +27,8 @@ Item {
     property color borderColor
     property color highlightBarColor
 
+    property alias currentSelection: customTumbler.currentItem
+
     MultiEffect {
         id: rootTumblerEmboss
         source:  tumblerContainer

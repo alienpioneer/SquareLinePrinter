@@ -29,6 +29,7 @@ qt_add_qml_module(appSquareLinePrinter
         CustomTumbler.qml
         CustomRoundButton.qml
         BigRoundButton.qml
+        BigRectangularButton.qml
     RESOURCES
 )
 

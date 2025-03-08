@@ -8,6 +8,10 @@ Item {
     implicitWidth:  260
     implicitHeight: bigRoundBtnRoot.width
 
+    property int innerOffset: 20
+    property int outerEmbossOffset: 6
+    property int innerEmbossOffset: 22
+
     property color baseColor
     property color highlightColor
     property color offColor
@@ -18,7 +22,7 @@ Item {
 
     property color arrowsColor
 
-    property bool enableEffects
+    property bool enableEffects: false
     property color glowBaseColor
     property int glowBlurMax: 32
     property double glowEffectOpacity: 1
@@ -66,7 +70,8 @@ Item {
 
         ButtonGlow {
             id: upButtonGlow
-            width: bigRoundBtnRoot.width/1.625
+            // width: bigRoundBtnRoot.width/1.625
+            width: bigRoundBtnRoot.width/1.3
 
             anchors{
                 top: bigRoundButton.top
@@ -106,7 +111,7 @@ Item {
 
         Rectangle {
             id: buttonHighlight
-            width: bigRoundButton.width-20
+            width: bigRoundButton.width-bigRoundBtnRoot.innerOffset
             height: width
             radius: width/2
 
@@ -119,7 +124,7 @@ Item {
 
             Rectangle {
                 id: buttonOutterEmboss
-                width: buttonHighlight.width-6
+                width: buttonHighlight.width-bigRoundBtnRoot.outerEmbossOffset
                 height: width
                 radius: width/2
 
@@ -132,7 +137,7 @@ Item {
 
                 Rectangle {
                     id: buttonInnerEmboss
-                    width: buttonOutterEmboss.width-22
+                    width: buttonOutterEmboss.width-bigRoundBtnRoot.innerEmbossOffset
                     height: width
                     radius: width/2
 
@@ -154,7 +159,7 @@ Item {
                     ShapePath {
                         id: upArrow
                         fillColor: "transparent"
-                        strokeColor: upArrow.selected ? glowBaseColor : bigRoundBtnRoot.arrowsColor
+                        strokeColor: upArrow.selected ? bigRoundBtnRoot.glowBaseColor : bigRoundBtnRoot.arrowsColor
                         strokeWidth: 4
 
                         property bool selected: false
@@ -173,7 +178,7 @@ Item {
                     ShapePath {
                         id: downArrow
                         fillColor: "transparent"
-                        strokeColor: downArrow.selected ? glowBaseColor : bigRoundBtnRoot.arrowsColor
+                        strokeColor: downArrow.selected ? bigRoundBtnRoot.glowBaseColor : bigRoundBtnRoot.arrowsColor
                         strokeWidth: 4
 
                         property bool selected: false
@@ -192,7 +197,7 @@ Item {
                     ShapePath {
                         id: leftArrow
                         fillColor: "transparent"
-                        strokeColor: leftArrow.selected ? glowBaseColor : bigRoundBtnRoot.arrowsColor
+                        strokeColor: leftArrow.selected ? bigRoundBtnRoot.glowBaseColor : bigRoundBtnRoot.arrowsColor
                         strokeWidth: 4
 
                         property bool selected: false
@@ -211,7 +216,7 @@ Item {
                     ShapePath {
                         id: rightArrow
                         fillColor: "transparent"
-                        strokeColor: rightArrow.selected ? glowBaseColor : bigRoundBtnRoot.arrowsColor
+                        strokeColor: rightArrow.selected ? bigRoundBtnRoot.glowBaseColor : bigRoundBtnRoot.arrowsColor
                         strokeWidth: 4
 
                         property bool selected: false

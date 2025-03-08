@@ -87,6 +87,39 @@ Item {
 
         enableEffects: Style.enableEffects
         glowBaseColor: Style.roundButtonsHighlight
+        glowBlurMax: Style.bigButtonsGlowBlurMax
+
+        embossBlurMax: Style.bigButtonsEmbossBlurMax
+        embossBlurMultiplier: Style.embossBlurMultiplier
+        embossBrightness: Style.embossBrightness
+
+        shadowColor: Style.shadowColor
+        shadowOffset: Style.shadowOffset
+    }
+
+    BigRectangularButton {
+        id: moveZButton
+
+        anchors{
+            left: movePage.left
+            bottom: movePage.bottom
+            bottomMargin: 40
+            leftMargin: 40
+        }
+
+        buttonRadius: 30
+
+        text: "MOVE\nZ"
+        textColor: Style.displayTextAltColor
+        arrowsColor: Style.displayTextAltColor
+
+        baseColor: Style.baseColor
+        highlightColor: Style.baseColorLight
+        offColor: Style.buttonOffColor
+
+        enableEffects: Style.enableEffects
+        glowBaseColor: Style.roundButtonsHighlight
+        glowBlurMax: Style.bigButtonsGlowBlurMax
 
         embossBlurMax: Style.bigButtonsEmbossBlurMax
         embossBlurMultiplier: Style.embossBlurMultiplier

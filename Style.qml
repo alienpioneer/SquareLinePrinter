@@ -44,4 +44,5 @@ QtObject {
     readonly property double embossBlurMultiplier: 1.3
 
     readonly property int    bigButtonsEmbossBlurMax: 42
+    readonly property int    bigButtonsGlowBlurMax: 32
 }

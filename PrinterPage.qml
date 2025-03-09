@@ -189,8 +189,8 @@ Item{
 
         leftUpperText: "Start Time"
         rightUpperText: "Printing Time"
-        rightLowerText: "08:25"
-        leftLowerText: "10:25"
+        rightLowerText: "10:22"
+        leftLowerText: "08:25"
 
         backgroundColor: Style.darkBkgColor
         backgroundBorderColor: Style.borderColor

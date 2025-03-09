@@ -16,6 +16,11 @@ Item {
     property color upperTextColor
     property color lowerTextColor
 
+    property bool hasIcons: false
+    property alias leftIconItem: displayLeftIcon.data
+    property alias rightIconItem: displayRightIcon.data
+
+    // If there is no left text, the screen has only one column !
     property alias leftUpperText: leftUpperText.text
     property alias leftLowerText: leftLowerText.text
     property alias rightUpperText: rightUpperText.text
@@ -69,11 +74,33 @@ Item {
                     Layout.alignment: Qt.AlignCenter
                 }
 
-                Text {
-                    id: leftLowerText
-                    font.pixelSize: 26
-                    color: specialDisplayRoot.lowerTextColor
+                RowLayout {
                     Layout.alignment: Qt.AlignCenter
+                    spacing: 10
+
+                    Item {
+                        id:displayLeftIcon
+
+                        implicitWidth: 10
+                        implicitHeight: 10
+
+                        visible: specialDisplayRoot.hasIcons
+
+                        Rectangle {
+                            width: parent.width
+                            height: parent.height
+                            color: "transparent"
+                            border.width: 1
+                            border.color: "red"
+                        }
+                    }
+
+                    Text {
+                        id: leftLowerText
+                        font.pixelSize: 26
+                        color: specialDisplayRoot.lowerTextColor
+                        Layout.alignment: Qt.AlignCenter
+                    }
                 }
             }
 
@@ -88,11 +115,33 @@ Item {
                     Layout.alignment: Qt.AlignCenter
                 }
 
-                Text {
-                    id: rightLowerText
-                    font.pixelSize: 26
-                    color: specialDisplayRoot.lowerTextColor
+                RowLayout {
                     Layout.alignment: Qt.AlignCenter
+                    spacing: 10
+
+                    Item {
+                        id: displayRightIcon
+
+                        implicitWidth: 10
+                        implicitHeight: 10
+
+                        visible: specialDisplayRoot.hasIcons
+
+                        Rectangle {
+                            width: parent.width
+                            height: parent.height
+                            color: "transparent"
+                            border.width: 1
+                            border.color: "red"
+                        }
+                    }
+
+                    Text {
+                        id: rightLowerText
+                        font.pixelSize: 26
+                        color: specialDisplayRoot.lowerTextColor
+                        Layout.alignment: Qt.AlignCenter
+                    }
                 }
             }
         }

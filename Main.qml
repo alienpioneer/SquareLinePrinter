@@ -84,14 +84,6 @@ Window {
             implicitHeight: selectorHightlight.width/2
 
             anchors.centerIn: barSelector
-
-            // Rectangle {
-            //     width: parent.width
-            //     height: parent.height
-            //     color: "transparent"
-            //     border.width: 1
-            //     border.color: "red"
-            // }
         }
 
         Text{
@@ -177,7 +169,7 @@ Window {
         color: Style.barColor
         anchors.left: parent.left
 
-        property int currentSelection: 2
+        property int currentSelection: 1
 
         Rectangle {
             id: leftBarSeparator

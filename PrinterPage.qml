@@ -176,10 +176,12 @@ Item{
         }
     }
 
+    // Upper time display
     Components.SpecialDisplay {
         id: topSpecialDisplay
         width: 335
         height: 82
+
         anchors {
             right: printerPage.right
             top: printerPage.top
@@ -187,31 +189,236 @@ Item{
             topMargin: printerPage.height*0.170
         }
 
-        leftUpperText: "Start Time"
-        rightUpperText: "Printing Time"
-        rightLowerText: "10:22"
-        leftLowerText: "08:25"
+        leftTitleText: "Start Time"
+        leftValueText: "08:25"
+
+        rightTitleText: "Printing Time"
+        rightValueText: "10:22"
 
         backgroundColor: Style.darkBkgColor
         backgroundBorderColor: Style.borderColor
         separatorColor: Style.displaySeparatorColor
-        upperTextColor: Style.displayTextColor
-        lowerTextColor: Style.displayTextAltColor
+        titleColor: Style.displayTextColor
+        valueColor: Style.displayTextAltColor
+
+        hasLeftIcon : true
+        checkLeftIcon: false
+
+        leftIconItem : Shape {
+            id: leftClockIcon
+            antialiasing: true
+            asynchronous: true
+            visible: true
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: Style.displayTextColor
+                strokeWidth: 2
+
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: 10
+                startY: 0
+
+                PathArc { x: 10 ; y: 20 ; radiusX: 1; radiusY: 1}
+                PathArc { x: 10 ; y: 0 ; radiusX: 1; radiusY: 1}
+            }
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: Style.displayTextColor
+                strokeWidth: 2
+
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: 10
+                startY: 3
+
+                PathLine { x: 10 ; y: 10 }
+                PathLine { x: 14 ; y: 6 }
+            }
+        }
+
+        hasRightIcon : true
+        checkRightIcon: false
+
+        rightIconItem : Shape {
+            id: rightClockIcon
+            antialiasing: true
+            asynchronous: true
+            visible: true
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: Style.displayTextColor
+                strokeWidth: 2
+
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: 10
+                startY: 0
+
+                PathArc { x: 10 ; y: 20 ; radiusX: 1; radiusY: 1}
+                PathArc { x: 10 ; y: 0 ; radiusX: 1; radiusY: 1}
+            }
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: Style.displayTextColor
+                strokeWidth: 2
+
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: 14
+                startY: 6
+
+                PathLine { x: 10 ; y: 10 }
+                PathLine { x: 10 ; y: 14 }
+            }
+        }
     }
 
+    // Lower temperatures display
     Components.SpecialDisplay {
         id: bottomSpecialDisplay
         width: 335
         height: 82
-        anchors.right: parent.right
-        anchors.top: topSpecialDisplay.bottom
-        anchors.rightMargin: 25
-        anchors.topMargin: 20
+
+        anchors {
+            right: parent.right
+            top: topSpecialDisplay.bottom
+            rightMargin: 25
+            topMargin: 20
+        }
 
         backgroundColor: Style.darkBkgColor
         backgroundBorderColor: Style.borderColor
         separatorColor: Style.displaySeparatorColor
-        upperTextColor: Style.displayTextColor
-        lowerTextColor: Style.displayTextAltColor
+        titleColor: Style.displayTextColor
+        valueColor: Style.displayTextAltColor
+        valueAltColor: Style.displayTextColor
+
+
+        leftTitleText: "Head Temp."
+        leftValueText: "195°"
+        leftValueAltText: "/195°"
+        hasLeftIcon : true
+        checkLeftIcon: false
+
+        rightTitleText: "Bed Temp."
+        rightValueText: "65°"
+        rightValueAltText: "/65°"
+        hasRightIcon : true
+        checkRightIcon: false
+
+        leftIconItem : Shape {
+            id: leftIcon
+            antialiasing: true
+            asynchronous: true
+            visible: true
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: Style.displayTextColor
+                strokeWidth: 2
+
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: 4
+                startY: 0
+
+                PathLine { x: 16 ; y: 0 }
+                PathLine { x: 18 ; y: 2 }
+                PathLine { x: 18 ; y: 10 }
+                PathLine { x: 2 ; y: 10 }
+                PathLine { x: 2 ; y: 2 }
+                PathLine { x: 4 ; y: 0 }
+            }
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: Style.displayTextColor
+                strokeWidth: 2
+
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: 4
+                startY: 11
+
+                PathLine { x: 5 ; y: 15 }
+                PathLine { x: 15 ; y: 15 }
+                PathLine { x: 16 ; y: 11 }
+            }
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: Style.displayTextColor
+                strokeWidth: 2
+
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: 10
+                startY: 16
+
+                PathArc { x: 10 ; y: 20 ; radiusX: 1; radiusY: 1}
+                PathArc { x: 10 ; y: 16 ; radiusX: 1; radiusY: 1}
+            }
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: Style.displayTextColor
+                strokeWidth: 2
+
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: 10
+                startY: 21
+
+                PathLine { x: 10 ; y: 23 }
+            }
+        }
+
+        rightIconItem : Shape {
+            id: rightIcon
+            antialiasing: true
+            asynchronous: true
+            visible: true
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: Style.displayTextColor
+                strokeWidth: 2
+
+                strokeStyle: ShapePath.SolidLine
+                capStyle: ShapePath.RoundCap
+                joinStyle: ShapePath.RoundJoin
+
+                startX: 4
+                startY: 4
+
+                PathLine { x: 16 ; y: 4 }
+                PathLine { x: 20 ; y: 16 }
+                PathLine { x: 18 ; y: 18 }
+                PathLine { x: 2 ; y: 18 }
+                PathLine { x: 0 ; y: 16 }
+                PathLine { x: 4 ; y: 4 }
+            }
+        }
     }
 }

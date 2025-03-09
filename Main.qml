@@ -113,16 +113,18 @@ Window {
         }
     }
 
+    // Background effects
     MultiEffect {
         id: backgroundBrightness
         source:  backgroundLightSource
         anchors.fill: backgroundLightSource
         blurEnabled: Style.enableBackgroundLight
         blur: 1
-        blurMax: 120
+        blurMax: 100
         blurMultiplier: 4
-        brightness: Style.enableBackgroundLight ? 0.01 : 0
+        brightness: Style.enableBackgroundLight ? 0.2 : 0
         visible: Style.enableBackgroundLight
+        opacity: 0.6
     }
 
     Rectangle {
@@ -534,9 +536,9 @@ Window {
 
         Text {
             anchors {
-                left: parent.left
+                left: topDisplay.left
                 leftMargin: 30
-                top: parent.top
+                top: topDisplay.top
                 topMargin: 20
             }
 
@@ -558,6 +560,182 @@ Window {
                         return "Adjust the print parameters";
                     default:
                         return "";
+                }
+            }
+        }
+
+        // Icons
+        Row {
+            spacing: 20
+
+            anchors {
+                right: topDisplay.right
+                rightMargin: 40
+                top: topDisplay.top
+                topMargin: 20
+            }
+
+            Shape {
+                id: usbIcon
+                width: 30
+                height: 30
+                antialiasing: true
+                asynchronous: true
+                visible: true
+
+                // Rectangle{
+                //     width: parent.width
+                //     height: parent.height
+                //     anchors.fill: parent
+                //     border.color: "red"
+                //     border.width: 1
+                //     color: "transparent"
+                //     visible: true
+                // }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: Style.displayTextColor
+                    strokeWidth: 3
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 2
+                    startY: 12
+
+                    PathLine { x: 4 ; y: 10 }
+                    PathLine { x: 20 ; y: 10 }
+                    PathLine { x: 20 ; y: 24 }
+                    PathLine { x: 4 ; y: 24 }
+                    PathLine { x: 2 ; y: 22 }
+                    PathLine { x: 2 ; y: 12 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: Style.displayTextColor
+                    strokeWidth: 3
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 24
+                    startY: 12
+
+                    PathLine { x: 24 ; y: 22 }
+                    PathLine { x: 28 ; y: 22 }
+                    PathLine { x: 28 ; y: 17 }
+                    PathLine { x: 26 ; y: 17 }
+                    PathLine { x: 28 ; y: 17 }
+                    PathLine { x: 28 ; y: 12 }
+                    PathLine { x: 24 ; y: 12 }
+                }
+            }
+
+            Shape {
+                id: screenIcon
+                width: 30
+                height: 30
+                antialiasing: true
+                asynchronous: true
+                visible: true
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: Style.displayTextColor
+                    strokeWidth: 3
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 2
+                    startY: 6
+
+                    PathLine { x: 4 ; y: 4 }
+                    PathLine { x: 26 ; y: 4 }
+                    PathLine { x: 28 ; y: 6 }
+                    PathLine { x: 28 ; y: 20 }
+                    PathLine { x: 26 ; y: 22 }
+                    PathLine { x: 15 ; y: 22 }
+                    PathLine { x: 15 ; y: 27 }
+                    PathLine { x: 15 ; y: 22 }
+                    PathLine { x: 4 ; y: 22 }
+                    PathLine { x: 2 ; y: 20 }
+                    PathLine { x: 2 ; y: 5 }
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: Style.displayTextColor
+                    strokeWidth: 3
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 8
+                    startY: 28
+
+                    PathLine { x: 22 ; y: 28 }
+                }
+            }
+
+            Shape {
+                id: wifiIcon
+                width: 30
+                height: 30
+                antialiasing: true
+                asynchronous: true
+                visible: true
+
+                ShapePath {
+                    fillColor: Style.displayTextColor
+                    strokeColor: Style.displayTextColor
+                    strokeWidth: 2
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 15
+                    startY: 22
+
+                    PathArc { x: 15 ; y: 26 ; radiusX: 1; radiusY: 1}
+                    PathArc { x: 15 ; y: 22 ; radiusX: 1; radiusY: 1}
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: Style.displayTextColor
+                    strokeWidth: 3
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 7
+                    startY: 18
+
+                    PathArc { x: 23 ; y: 18 ; radiusX: 10; radiusY: 10}
+                }
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: Style.displayTextColor
+                    strokeWidth: 3
+
+                    strokeStyle: ShapePath.SolidLine
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.RoundJoin
+
+                    startX: 3
+                    startY: 11
+
+                    PathArc { x: 27 ; y: 11 ; radiusX: 16; radiusY: 16}
                 }
             }
         }

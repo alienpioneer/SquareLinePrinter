@@ -5,8 +5,8 @@ QtObject {
 
     readonly property int textSize: 13
 
-    readonly property color baseColor: "#495673"
-    // readonly property color baseColor: "#45506C"
+    // readonly property color baseColor: "#495673"
+    readonly property color baseColor: "#45506C"
     readonly property color baseColorLight: "#7E92B9"
 
     readonly property color barColor: "#191D26"
@@ -31,6 +31,7 @@ QtObject {
     readonly property color sliderBkgColor: "#2A3342"
     readonly property color roundButtonsHighlight: "#05bcff"
 
+    // Enable effects
     readonly property bool  enableEffects: true
     readonly property bool  enableBackgroundLight: false
 

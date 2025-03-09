@@ -13,18 +13,25 @@ Item {
 
     property color separatorColor
 
-    property color upperTextColor
-    property color lowerTextColor
+    property color titleColor
+    property color valueColor
+    property color valueAltColor
 
-    property bool hasIcons: false
+    property bool hasLeftIcon: false
+    property bool hasRightIcon: false
+    property bool checkLeftIcon: false
+    property bool checkRightIcon: false
     property alias leftIconItem: displayLeftIcon.data
     property alias rightIconItem: displayRightIcon.data
 
     // If there is no left text, the screen has only one column !
-    property alias leftUpperText: leftUpperText.text
-    property alias leftLowerText: leftLowerText.text
-    property alias rightUpperText: rightUpperText.text
-    property alias rightLowerText: rightLowerText.text
+    property alias leftTitleText: leftTitleText.text
+    property alias leftValueText: leftValueText.text
+    property alias leftValueAltText: leftValueAltText.text
+
+    property alias rightTitleText: rightTitleText.text
+    property alias rightValueText: rightValueText.text
+    property alias rightValueAltText: rightValueAltText.text
 
     // Indicator used for debug
     Rectangle{
@@ -55,36 +62,36 @@ Item {
             width: 2
             height: specialDisplayRoot.height - specialDisplayRoot.height*0.4
             color: specialDisplayRoot.separatorColor
-            visible: leftUpperText.text === "" ? false : true
+            visible: leftTitleText.text === "" ? false : true
         }
 
         RowLayout {
             anchors.centerIn: dispayBkg
-            spacing: 60
+            spacing: leftValueAltText.text === "" ? 60 : 30
 
             ColumnLayout {
                 spacing: 2
-                visible: leftUpperText.text === "" ? false : true
+                visible: leftTitleText.text === "" ? false : true
 
                 Text {
-                    id: leftUpperText
+                    id: leftTitleText
                     font.pixelSize: 18
                     font.bold: true
-                    color: specialDisplayRoot.upperTextColor
+                    color: specialDisplayRoot.titleColor
                     Layout.alignment: Qt.AlignCenter
                 }
 
                 RowLayout {
                     Layout.alignment: Qt.AlignCenter
-                    spacing: 10
+                    spacing: leftValueAltText.text === "" ? 10 : 6
 
                     Item {
-                        id:displayLeftIcon
+                        id: displayLeftIcon
 
-                        implicitWidth: 10
-                        implicitHeight: 10
+                        implicitWidth: 20
+                        implicitHeight: 20
 
-                        visible: specialDisplayRoot.hasIcons
+                        visible: specialDisplayRoot.hasLeftIcon
 
                         Rectangle {
                             width: parent.width
@@ -92,14 +99,23 @@ Item {
                             color: "transparent"
                             border.width: 1
                             border.color: "red"
+                            visible: specialDisplayRoot.checkLeftIcon
                         }
                     }
 
                     Text {
-                        id: leftLowerText
+                        id: leftValueText
                         font.pixelSize: 26
-                        color: specialDisplayRoot.lowerTextColor
+                        color: specialDisplayRoot.valueColor
                         Layout.alignment: Qt.AlignCenter
+                    }
+
+                    Text {
+                        id: leftValueAltText
+                        font.pixelSize: 20
+                        color: specialDisplayRoot.valueAltColor
+                        Layout.alignment: Qt.AlignCenter
+                        visible: leftValueAltText.text === "" ? false : true
                     }
                 }
             }
@@ -108,24 +124,24 @@ Item {
                 spacing: 2
 
                 Text {
-                    id: rightUpperText
+                    id: rightTitleText
                     font.pixelSize: 18
                     font.bold: true
-                    color: specialDisplayRoot.upperTextColor
+                    color: specialDisplayRoot.titleColor
                     Layout.alignment: Qt.AlignCenter
                 }
 
                 RowLayout {
                     Layout.alignment: Qt.AlignCenter
-                    spacing: 10
+                    spacing: rightValueAltText.text === "" ? 10 : 6
 
                     Item {
                         id: displayRightIcon
 
-                        implicitWidth: 10
-                        implicitHeight: 10
+                        implicitWidth: 20
+                        implicitHeight: 20
 
-                        visible: specialDisplayRoot.hasIcons
+                        visible: specialDisplayRoot.hasRightIcon
 
                         Rectangle {
                             width: parent.width
@@ -133,14 +149,23 @@ Item {
                             color: "transparent"
                             border.width: 1
                             border.color: "red"
+                            visible: specialDisplayRoot.checkRightIcon
                         }
                     }
 
                     Text {
-                        id: rightLowerText
+                        id: rightValueText
                         font.pixelSize: 26
-                        color: specialDisplayRoot.lowerTextColor
+                        color: specialDisplayRoot.valueColor
                         Layout.alignment: Qt.AlignCenter
+                    }
+
+                    Text {
+                        id: rightValueAltText
+                        font.pixelSize: 20
+                        color: specialDisplayRoot.valueAltColor
+                        Layout.alignment: Qt.AlignCenter
+                        visible: rightValueAltText.text === "" ? false : true
                     }
                 }
             }

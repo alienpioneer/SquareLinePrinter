@@ -175,16 +175,16 @@ Item {
             topMargin: 75
         }
 
-        leftUpperText: "X Position"
-        rightUpperText: "Y Position"
-        rightLowerText: `${currentPosition.y}`
-        leftLowerText: `${currentPosition.x}`
+        leftTitleText: "X Position"
+        rightTitleText: "Y Position"
+        rightValueText: `${currentPosition.y}`
+        leftValueText: `${currentPosition.x}`
 
         backgroundColor: Style.darkBkgColor
         backgroundBorderColor: Style.borderColor
         separatorColor: Style.displaySeparatorColor
-        upperTextColor: Style.displayTextColor
-        lowerTextColor: Style.displayTextAltColor
+        titleColor: Style.displayTextColor
+        valueColor: Style.displayTextAltColor
     }
 
     Components.SpecialDisplay {
@@ -200,13 +200,13 @@ Item {
             topMargin: 75
         }
 
-        rightUpperText: "Z Position"
-        rightLowerText: `${currentPosition.z}`
+        rightTitleText: "Z Position"
+        rightValueText: `${currentPosition.z}`
 
         backgroundColor: Style.darkBkgColor
         backgroundBorderColor: Style.borderColor
         separatorColor: Style.displaySeparatorColor
-        upperTextColor: Style.displayTextColor
-        lowerTextColor: Style.displayTextAltColor
+        titleColor: Style.displayTextColor
+        valueColor: Style.displayTextAltColor
     }
 }

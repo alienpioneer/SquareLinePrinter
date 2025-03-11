@@ -171,6 +171,8 @@ Window {
         color: Style.barColor
         anchors.left: parent.left
 
+        property bool qt_greater_6_5_2: Style.qt_greater_6_5_2
+
         property int currentSelection: 1
 
         Rectangle {
@@ -201,10 +203,10 @@ Window {
                 visible: true
 
                 // On QT>6.7 use transforms
-                // transform: Translate {
-                //     x: 1.5*printIcon.width
-                //     y: 1.5*printIcon.height
-                // }
+                transform: Translate {
+                    x: leftBar.qt_greater_6_5_2 ? printIcon.width/2 : 0
+                    y: leftBar.qt_greater_6_5_2 ? printIcon.height/2 : 0
+                }
 
                 ShapePath {
                     id: startButtonPath
@@ -253,10 +255,10 @@ Window {
                 visible: true
 
                 // On QT>6.7 use transforms
-                // transform: Translate {
-                //     x: moveIcon.width
-                //     y: moveIcon.height
-                // }
+                transform: Translate {
+                    x: leftBar.qt_greater_6_5_2 ? printIcon.width/2 : 0
+                    y: leftBar.qt_greater_6_5_2 ? printIcon.height/2 : 0
+                }
 
                 ShapePath {
                     fillColor: "transparent"
@@ -377,6 +379,12 @@ Window {
                 asynchronous: true
                 anchors.centerIn: parent
                 visible: true
+
+                // On QT>6.7 use transforms
+                transform: Translate {
+                    x: leftBar.qt_greater_6_5_2 ? printIcon.width/2 : 0
+                    y: leftBar.qt_greater_6_5_2 ? printIcon.height/2 : 0
+                }
 
                 ShapePath {
                     fillColor: "transparent"

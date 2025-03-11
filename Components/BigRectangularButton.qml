@@ -36,6 +36,8 @@ Item {
     property color shadowColor
     property int   shadowOffset
 
+    property bool qt_greater_6_5_2: false
+
     signal pressedUp()
     signal pressedDown()
 
@@ -124,6 +126,12 @@ Item {
                     asynchronous: true
                     anchors.centerIn: buttonEmboss
                     visible: true
+
+                    // On QT>6.7 use transforms
+                    transform: Translate {
+                        x: bigRectBtnRoot.qt_greater_6_5_2 ? arrows.width/2 : 0
+                        y: bigRectBtnRoot.qt_greater_6_5_2 ? arrows.height/2 : 0
+                    }
 
                     ShapePath {
                         id: upArrow

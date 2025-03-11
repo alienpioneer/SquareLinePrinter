@@ -15,6 +15,8 @@ Item{
         anchors.left: parent.left
         anchors.leftMargin: 25
 
+        // property int currentYPos: 250
+
         MultiEffect {
             id: mainViewEmboss
             source:  mainView
@@ -48,7 +50,36 @@ Item{
                         GradientStop { position: 0.1; color: "#3A4455" }
                         GradientStop { position: 0.8; color: "#1C212B" }
                     }
+
+            // clip: true
+
+            // Rectangle {
+            //     id : mainViewProgress
+
+            //     anchors {
+            //         top: mainView.top
+            //         left: mainView.left
+            //         topMargin: mainView.border.width
+            //         leftMargin: mainView.border.width
+            //     }
+
+            //     width: mainView.width-mainView.border.width*2
+            //     height: mainViewItem.currentYPos-y
+
+            //     radius:  mainView.radius-mainView.border.width
+            //     color: Style.barColor
+            // }
         }
+
+        // MouseArea{
+        //     anchors.fill: mainView
+
+        //     onPositionChanged: (mouse)=> {
+        //         mainViewItem.currentYPos = Math.floor(mouseY)
+        //         // console.log("Y:", mainViewItem.currentYPos)
+        //     }
+        // }
+
     }
 
     Components.SpecialButton{

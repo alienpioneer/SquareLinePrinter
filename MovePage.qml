@@ -86,6 +86,8 @@ Item {
             rightMargin: 260
         }
 
+        qt_greater_6_5_2: Style.qt_greater_6_5_2
+
         text: "MOVE\nXY"
         textColor: Style.displayTextAltColor
         arrowsColor: Style.displayTextAltColor
@@ -131,6 +133,8 @@ Item {
             bottomMargin: 40
             leftMargin: 40
         }
+
+        qt_greater_6_5_2: Style.qt_greater_6_5_2
 
         buttonRadius: 30
 

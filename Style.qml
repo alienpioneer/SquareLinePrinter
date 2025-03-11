@@ -3,6 +3,8 @@ import QtQuick
 
 QtObject {
 
+    readonly property bool qt_greater_6_5_2: true
+
     readonly property int textSize: 13
 
     // readonly property color baseColor: "#495673"

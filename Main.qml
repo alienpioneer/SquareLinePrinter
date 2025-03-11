@@ -563,7 +563,7 @@ Window {
                     case 1:
                         return "The current file is being printed";
                     case 2:
-                        return "Press the control buttons to move the tray and head";
+                        return "Use the buttons to move the tray and head";
                     case 3:
                         return "Adjust the print parameters";
                     default:

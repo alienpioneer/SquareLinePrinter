@@ -14,7 +14,9 @@ This project is not affiliated with or endorsed by Square Line Studio. It is an 
 The project was tested on a Raspberry Pi Zero 2 with a Waveshare 3.5 inch touch resistive display.
 
 ![IMG_20250316_171350](https://github.com/user-attachments/assets/cbdb2a03-d1af-4210-a5a3-ca4c7e41deaa)
+![IMG_20250317_123025](https://github.com/user-attachments/assets/568895ba-1b62-489a-af6f-1fdb75dd3ca9)
 ![IMG_20250316_171336](https://github.com/user-attachments/assets/7a811058-36c5-4e82-b01d-2b48dfa1cb19)
+![IMG_20250317_123008](https://github.com/user-attachments/assets/8e9f1b81-0a41-4887-ba86-c9ba91fa2a05)
 
 To cross-compile Qt on Debian Bookworm I followed the guides: 
 

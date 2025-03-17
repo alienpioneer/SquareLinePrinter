@@ -21,6 +21,7 @@ The project was tested on a Raspberry Pi Zero 2 with a Waveshare 3.5 inch touch 
 To cross-compile Qt on Debian Bookworm I followed the guides: 
 
 https://wiki.qt.io/Cross-Compile_Qt_6_for_Raspberry_Pi
+
 https://doc.qt.io/qt-6/configure-linux-device.html
 
 For the configuration I used the following:

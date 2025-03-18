@@ -1,13 +1,13 @@
 # 3D Printer UI Demo (Qt 6)
 
-This project is a Qt 6 implementation of the **3D Printer UI Demo** originally designed by [Square Line Studio](https://squareline.io/demos). The goal of this project is to recreate the demo using only Qt 6 QML, without relying on any external resources.
+This project is a Qt 6 implementation of the **3D Printer UI Demo** originally designed by [SquareLine Studio](https://squareline.io/demos). The goal of this project is to recreate the demo using only Qt 6 QML, without relying on any external resources.
 This project was created to explore Qt 6's capabilities in replicating complex and visually appealing UIs. It serves as a learning resource
 
 ## About the UI Design
-The original UI concept and design are the creative work of **Square Line Studio**. This project is a technical implementation of their design, intended for educational and demonstration purposes. All credit for the visual design and user experience goes to Square Line Studio.
+The original UI concept and design are the creative work of **SquareLine Studio**. This project is a technical implementation of their design, intended for educational and demonstration purposes. All credit for the visual design and user experience goes to SquareLine Studio.
 
 ## Disclaimer
-This project is not affiliated with or endorsed by Square Line Studio. It is an independent implementation of their UI design, created solely for educational purposes.
+This project is not affiliated with or endorsed by SquareLine Studio. It is an independent implementation of their UI design, created solely for educational purposes.
 
 ## Linux running environment
 

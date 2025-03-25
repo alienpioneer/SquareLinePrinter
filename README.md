@@ -39,6 +39,14 @@ QT_QPA_EGLFS_HIDECURSOR=1
 ```
 The project was tested on a Raspberry Pi Zero 2 with a 5 inch Display-h with capacitive touch
 
+![IMG_20250324_173831](https://github.com/user-attachments/assets/27ee57bd-bb83-4cc9-a5fe-88d7aaa37851)
+![IMG_20250325_125007](https://github.com/user-attachments/assets/c917300d-bc27-4a8f-8cb4-1f92aa8653af)
+![IMG_20250325_125015](https://github.com/user-attachments/assets/db08de53-dfdd-4ab9-a40f-42af0d9264f6)
+![IMG_20250325_125022](https://github.com/user-attachments/assets/a103f03d-e4b0-4906-a862-4a50af013188)
+
+
+https://github.com/user-attachments/assets/0a5a9ca7-103f-4d24-9187-4cf8fe35fb78
+
 
 
 The project was also tested on a Raspberry Pi Zero 2 with a Waveshare 3.5 inch touch resistive display
